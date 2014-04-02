@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network xmlns="http://www.xmos.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.xmos.com http://www.xmos.com" ManuallySpecifiedRouting="true">
+  <Type>Board</Type>
+  <Name>SOMANET-4DX-Chain-C22-IfmBLDC-unsorted</Name>
+  <Declarations>
+    <Declaration>core stdcore[16]</Declaration>
+  </Declarations>
+  <Packages>
+    <Package Id="0" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="0" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="30">
+          <Boot>
+            <Source Location="SPI:bootFlash_0"/>
+            <Bootee NodeId="1" Core="0"/>
+            <Bootee NodeId="2" Core="0"/>
+            <Bootee NodeId="3" Core="0"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[0]">
+            <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO_0"/>
+            <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS_0"/>
+            <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK_0"/>
+            <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI_0"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLG" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLF" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="1" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="29">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[1]">
+            <Port Location="XS1_PORT_1K" Name="LED_BLUE_0"/>
+            <Port Location="XS1_PORT_1L" Name="LED_GREEN_0"/>
+            <Port Location="XS1_PORT_1M" Name="LED_RED_0"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLF" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLA" direction="1"/>
+              <Link name="XLB" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="1" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="2" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="28">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[2]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLA" direction="0"/>
+              <Link name="XLB" direction="0"/>
+              <Link name="XLG" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLF" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="3" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" ReferenceFrequency="250Mhz" RoutingId="27">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[3]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLF" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLB" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="2" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="4" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="23">
+          <Boot>
+            <Source Location="SPI:bootFlash_1"/>
+            <Bootee NodeId="5" Core="4"/>
+            <Bootee NodeId="6" Core="4"/>
+            <Bootee NodeId="7" Core="4"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[4]">
+            <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO_1"/>
+            <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS_1"/>
+            <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK_1"/>
+            <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI_1"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLF" direction="0"/>
+              <Link name="XLB" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="5" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="24">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[5]">
+            <Port Location="XS1_PORT_1K" Name="LED_BLUE_1"/>
+            <Port Location="XS1_PORT_1L" Name="LED_GREEN_1"/>
+            <Port Location="XS1_PORT_1M" Name="LED_RED_1"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLB" direction="0"/>
+              <Link name="XLF" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLG" direction="1"/>
+              <Link name="XLA" direction="0"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="3" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="6" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="25">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[6]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLA" direction="1"/>
+              <Link name="XLB" direction="1"/>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLF" direction="0"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="7" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" ReferenceFrequency="250Mhz" RoutingId="26">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[7]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="1"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLB" direction="0"/>
+              <Link name="XLF" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLG" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="4" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="8" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="22">
+          <Boot>
+            <Source Location="SPI:bootFlash_2"/>
+            <Bootee NodeId="9" Core="8"/>
+            <Bootee NodeId="10" Core="8"/>
+            <Bootee NodeId="11" Core="8"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[8]">
+            <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO_2"/>
+            <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS_2"/>
+            <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK_2"/>
+            <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI_2"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLB" direction="0"/>
+              <Link name="XLG" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLF" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="9" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="21">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[9]">
+            <Port Location="XS1_PORT_1K" Name="LED_BLUE_2"/>
+            <Port Location="XS1_PORT_1L" Name="LED_GREEN_2"/>
+            <Port Location="XS1_PORT_1M" Name="LED_RED_2"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLF" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLA" direction="1"/>
+              <Link name="XLB" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="5" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="10" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="20">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[10]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="1"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLA" direction="0"/>
+              <Link name="XLB" direction="0"/>
+              <Link name="XLG" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLF" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="11" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" ReferenceFrequency="250Mhz" RoutingId="19">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[11]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLF" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLB" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="6" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="12" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="0">
+          <Boot>
+            <Source Location="SPI:bootFlash_3"/>
+            <Bootee NodeId="13" Core="12"/>
+            <Bootee NodeId="14" Core="12"/>
+            <Bootee NodeId="15" Core="12"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[12]">
+            <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO_3"/>
+            <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS_3"/>
+            <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK_3"/>
+            <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI_3"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="4" direction="0"/>
+            </Bits>
+            <Links>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLF" direction="0"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="13" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="16">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[13]">
+            <Port Location="XS1_PORT_1K" Name="LED_BLUE_3"/>
+            <Port Location="XS1_PORT_1L" Name="LED_GREEN_3"/>
+            <Port Location="XS1_PORT_1M" Name="LED_RED_3"/>
+          </Core>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLF" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLG" direction="1"/>
+              <Link name="XLA" direction="0"/>
+              <Link name="XLB" direction="0"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+    <Package Id="7" Type="XS1-L2A-QF124">
+      <Nodes>
+        <Node Id="14" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" RoutingId="17">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[14]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="1"/>
+              <Bit number="1" direction="0"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLA" direction="1"/>
+              <Link name="XLB" direction="1"/>
+              <Link name="XLG" direction="0"/>
+              <Link name="XLH" direction="0"/>
+              <Link name="XLE" direction="0"/>
+              <Link name="XLF" direction="0"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+        <Node Id="15" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" ReferenceFrequency="250Mhz" RoutingId="18">
+          <Boot>
+            <Source Location="XMOSLINK"/>
+          </Boot>
+          <Core Number="0" Reference="stdcore[15]"/>
+          <RoutingTable>
+            <Bits>
+              <Bit number="0" direction="0"/>
+              <Bit number="1" direction="1"/>
+              <Bit number="2" direction="0"/>
+              <Bit number="3" direction="0"/>
+              <Bit number="4" direction="1"/>
+            </Bits>
+            <Links>
+              <Link name="XLB" direction="0"/>
+              <Link name="XLF" direction="1"/>
+              <Link name="XLE" direction="1"/>
+              <Link name="XLH" direction="1"/>
+              <Link name="XLG" direction="1"/>
+            </Links>
+          </RoutingTable>
+        </Node>
+      </Nodes>
+    </Package>
+  </Packages>
+  <Links>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="0" Link="XLG"/>
+      <LinkEndpoint NodeId="1" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="0" Link="XLH"/>
+      <LinkEndpoint NodeId="1" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="0" Link="XLE"/>
+      <LinkEndpoint NodeId="1" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="0" Link="XLF"/>
+      <LinkEndpoint NodeId="1" Link="XLG"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="1" Link="XLA"/>
+      <LinkEndpoint NodeId="2" Link="XLA"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="1" Link="XLB"/>
+      <LinkEndpoint NodeId="2" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="2" Link="XLG"/>
+      <LinkEndpoint NodeId="3" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="2" Link="XLH"/>
+      <LinkEndpoint NodeId="3" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="2" Link="XLE"/>
+      <LinkEndpoint NodeId="3" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="2" Link="XLF"/>
+      <LinkEndpoint NodeId="3" Link="XLG"/>
+    </Link>
+    <Link Encoding="2wire" Delays="4,4">
+      <LinkEndpoint NodeId="3" Link="XLB"/>
+      <LinkEndpoint NodeId="7" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="4" Link="XLG"/>
+      <LinkEndpoint NodeId="5" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="4" Link="XLH"/>
+      <LinkEndpoint NodeId="5" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="4" Link="XLE"/>
+      <LinkEndpoint NodeId="5" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="4" Link="XLF"/>
+      <LinkEndpoint NodeId="5" Link="XLG"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="5" Link="XLA"/>
+      <LinkEndpoint NodeId="6" Link="XLA"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="5" Link="XLB"/>
+      <LinkEndpoint NodeId="6" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="6" Link="XLG"/>
+      <LinkEndpoint NodeId="7" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="6" Link="XLH"/>
+      <LinkEndpoint NodeId="7" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="6" Link="XLE"/>
+      <LinkEndpoint NodeId="7" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="6" Link="XLF"/>
+      <LinkEndpoint NodeId="7" Link="XLG"/>
+    </Link>
+    <Link Encoding="2wire" Delays="4,4">
+      <LinkEndpoint NodeId="4" Link="XLB"/>
+      <LinkEndpoint NodeId="8" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="8" Link="XLG"/>
+      <LinkEndpoint NodeId="9" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="8" Link="XLH"/>
+      <LinkEndpoint NodeId="9" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="8" Link="XLE"/>
+      <LinkEndpoint NodeId="9" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="8" Link="XLF"/>
+      <LinkEndpoint NodeId="9" Link="XLG"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="9" Link="XLA"/>
+      <LinkEndpoint NodeId="10" Link="XLA"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="9" Link="XLB"/>
+      <LinkEndpoint NodeId="10" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="10" Link="XLG"/>
+      <LinkEndpoint NodeId="11" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="10" Link="XLH"/>
+      <LinkEndpoint NodeId="11" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="10" Link="XLE"/>
+      <LinkEndpoint NodeId="11" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="10" Link="XLF"/>
+      <LinkEndpoint NodeId="11" Link="XLG"/>
+    </Link>
+    <Link Encoding="2wire" Delays="4,4">
+      <LinkEndpoint NodeId="11" Link="XLB"/>
+      <LinkEndpoint NodeId="15" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="12" Link="XLG"/>
+      <LinkEndpoint NodeId="13" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="12" Link="XLH"/>
+      <LinkEndpoint NodeId="13" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="12" Link="XLE"/>
+      <LinkEndpoint NodeId="13" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="12" Link="XLF"/>
+      <LinkEndpoint NodeId="13" Link="XLG"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="13" Link="XLA"/>
+      <LinkEndpoint NodeId="14" Link="XLA"/>
+    </Link>
+    <Link Encoding="5wire" Delays="4,4">
+      <LinkEndpoint NodeId="13" Link="XLB"/>
+      <LinkEndpoint NodeId="14" Link="XLB"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="14" Link="XLG"/>
+      <LinkEndpoint NodeId="15" Link="XLF"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="14" Link="XLH"/>
+      <LinkEndpoint NodeId="15" Link="XLE"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="14" Link="XLE"/>
+      <LinkEndpoint NodeId="15" Link="XLH"/>
+    </Link>
+    <Link Encoding="5wire" Delays="0,1">
+      <LinkEndpoint NodeId="14" Link="XLF"/>
+      <LinkEndpoint NodeId="15" Link="XLG"/>
+    </Link>
+  </Links>
+  <ExternalDevices>
+    <Device NodeId="0" Core="0" Class="SPIFlash" Name="bootFlash_0" Type="AT25DF041A">
+      <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO_0"/>
+      <Attribute Name="PORT_SPI_SS" Value="PORT_SPI_SS_0"/>
+      <Attribute Name="PORT_SPI_CLK" Value="PORT_SPI_CLK_0"/>
+      <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_0"/>
+    </Device>
+    <Device NodeId="4" Core="0" Class="SPIFlash" Name="bootFlash_1" Type="AT25DF041A">
+      <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO_1"/>
+      <Attribute Name="PORT_SPI_SS" Value="PORT_SPI_SS_1"/>
+      <Attribute Name="PORT_SPI_CLK" Value="PORT_SPI_CLK_1"/>
+      <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_1"/>
+    </Device>
+    <Device NodeId="8" Core="0" Class="SPIFlash" Name="bootFlash_2" Type="AT25DF041A">
+      <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO_2"/>
+      <Attribute Name="PORT_SPI_SS" Value="PORT_SPI_SS_2"/>
+      <Attribute Name="PORT_SPI_CLK" Value="PORT_SPI_CLK_2"/>
+      <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_2"/>
+    </Device>
+    <Device NodeId="12" Core="0" Class="SPIFlash" Name="bootFlash_3" Type="AT25DF041A">
+      <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO_3"/>
+      <Attribute Name="PORT_SPI_SS" Value="PORT_SPI_SS_3"/>
+      <Attribute Name="PORT_SPI_CLK" Value="PORT_SPI_CLK_3"/>
+      <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_3"/>
+    </Device>
+  </ExternalDevices>
+  <JTAGChain>
+    <JTAGDevice NodeId="0" Position="0"/>
+    <JTAGDevice NodeId="1" Position="1"/>
+    <JTAGDevice NodeId="2" Position="2"/>
+    <JTAGDevice NodeId="3" Position="3"/>
+    <JTAGDevice NodeId="4" Position="4"/>
+    <JTAGDevice NodeId="5" Position="5"/>
+    <JTAGDevice NodeId="6" Position="6"/>
+    <JTAGDevice NodeId="7" Position="7"/>
+    <JTAGDevice NodeId="8" Position="8"/>
+    <JTAGDevice NodeId="9" Position="9"/>
+    <JTAGDevice NodeId="10" Position="10"/>
+    <JTAGDevice NodeId="11" Position="11"/>
+    <JTAGDevice NodeId="12" Position="12"/>
+    <JTAGDevice NodeId="13" Position="13"/>
+    <JTAGDevice NodeId="14" Position="14"/>
+    <JTAGDevice NodeId="15" Position="15"/>
+  </JTAGChain>
+</Network>

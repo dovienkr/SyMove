@@ -50,14 +50,14 @@
  * Mandatory constants to be set
  */
 #define POLE_PAIRS  				8
-#define MAX_NOMINAL_SPEED  			5260				// rpm
-#define MAX_NOMINAL_CURRENT  		2					// A
-#define MOTOR_TORQUE_CONSTANT 		34    				// mNm/A
+#define MAX_NOMINAL_SPEED  			6110				// rpm
+#define MAX_NOMINAL_CURRENT  		3					// A
+#define MOTOR_TORQUE_CONSTANT 		36    				// mNm/A
 
 /* If you have any gears added specify gear-ratio
  * and any additional encoders attached specify encoder resolution here (optional)
  */
-#define GEAR_RATIO  				26					// if no gears are attached - set to gear ratio to 1
+#define GEAR_RATIO  				18					// if no gears are attached - set to gear ratio to 1
 #define ENCODER_RESOLUTION 			4000				// 4 x Max count of Quadrature Encoder (4X decoding)
 
 /* Choose Position/Velocity Sensor */

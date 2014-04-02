@@ -275,7 +275,7 @@
   <!-- ##########################FIRST SOMANET C22 END########################## -->
     
   <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="4,4">
+    <Link Encoding="2wire" Delays="8,8">
       <LinkEndpoint NodeId="3" Link="XLB"/>
       <LinkEndpoint NodeId="7" Link="XLB"/> 
     </Link>
@@ -330,9 +330,9 @@
   <!-- ##########################SECOND SOMANET C22 END########################## -->
 
   <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="4,4">
+    <Link Encoding="2wire" Delays="6,6">
       <LinkEndpoint NodeId="4" Link="XLB"/>
-      <LinkEndpoint NodeId="8" Link="XLB"/> 
+      <LinkEndpoint NodeId="8" Link="XLA"/> 
     </Link>
   <!-- ###########SOMANET-INTER-CONNECTION########### -->
  
