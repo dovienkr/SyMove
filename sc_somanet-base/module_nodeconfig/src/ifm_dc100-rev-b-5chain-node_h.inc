@@ -66,8 +66,8 @@ extern out port p_ifm_shared_leds_wden_node_2; /* BlueGreenRed_WDEN */
 extern out port p_ifm_wd_tick_node_2;
 
 /* Expansion Port */
-extern port p_ifm_ext_d0_node_0;
-extern port p_ifm_ext_d1_node_0;
+//out port p_ifm_ext_d0_node_0;
+//buffered in port p_ifm_ext_d1_node_0;
 extern port p_ifm_ext_d2_node_0;
 extern port p_ifm_ext_d3_node_0;
 

@@ -289,8 +289,8 @@ void commutation_sinusoidal_loop(int sensor_select, t_pwm_control &pwm_ctrl, hal
 
 }
 
-void commutation_sinusoidal(chanend c_hall, chanend c_qei, chanend c_signal, chanend c_watchdog, \
-		chanend  c_commutation_p1, chanend  c_commutation_p2, chanend  c_commutation_p3, \
+void commutation_sinusoidal(chanend c_hall, chanend c_qei, chanend c_signal, chanend c_watchdog,
+		chanend  c_commutation_p1, chanend  c_commutation_p2, chanend  c_commutation_p3,
 		chanend c_pwm_ctrl, hall_par &hall_params, qei_par &qei_params, commutation_par &commutation_params, out port p_ifm_esf_rstn_pwml_pwmh, out port p_ifm_coastn)
 {
 
@@ -317,7 +317,38 @@ void commutation_sinusoidal(chanend c_hall, chanend c_qei, chanend c_signal, cha
 		t :> ts;
 
 		commutation_sinusoidal_loop(HALL, pwm_ctrl, hall_params, qei_params, commutation_params,
-				  c_hall, c_qei, c_pwm_ctrl, c_signal, c_commutation_p1, c_commutation_p2, \
+				  c_hall, c_qei, c_pwm_ctrl, c_signal, c_commutation_p1, c_commutation_p2,
 				  c_commutation_p3);
 
 }
+
+void commutation_sinusoidal_nowatchdog(chanend c_hall, chanend c_qei, chanend c_signal,
+        chanend  c_commutation_p1, chanend  c_commutation_p2, chanend  c_commutation_p3,
+        chanend c_pwm_ctrl, hall_par &hall_params, qei_par &qei_params, commutation_par &commutation_params,
+        out port p_ifm_esf_rstn_pwml_pwmh, out port p_ifm_coastn)
+{
+
+        t_pwm_control pwm_ctrl;
+
+        const unsigned t_delay = 300*USEC_FAST;
+        const unsigned timeout = 2*SEC_FAST;
+        timer t;
+        unsigned int ts;
+        int init_state = INIT_BUSY;
+
+        commutation_init_to_zero(pwm_ctrl, c_pwm_ctrl);
+        t :> ts;
+        t when timerafter (ts + t_delay) :> ts;
+
+        a4935_init(A4935_BIT_PWML | A4935_BIT_PWMH, p_ifm_esf_rstn_pwml_pwmh, p_ifm_coastn);
+        t when timerafter (ts + t_delay) :> ts;
+
+        t :> ts;
+
+        commutation_sinusoidal_loop(HALL, pwm_ctrl, hall_params, qei_params, commutation_params,
+                  c_hall, c_qei, c_pwm_ctrl, c_signal, c_commutation_p1, c_commutation_p2, \
+                  c_commutation_p3);
+}
+
+
+

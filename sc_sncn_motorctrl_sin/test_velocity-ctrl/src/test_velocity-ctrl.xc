@@ -50,13 +50,11 @@
 #include <comm_loop_server.h>
 #include <refclk.h>
 #include <velocity_ctrl_server.h>
-#include <xscope.h>
 #include <profile.h>
 #include <internal_config.h>
 #include <bldc_motor_config.h>
 #include <drive_config.h>
 #include <profile_control.h>
-#include <flash_somanet.h>
 
 //#define ENABLE_xscope_main
 #define COM_CORE 0
@@ -65,16 +63,6 @@
 on stdcore[IFM_CORE]: clock clk_adc = XS1_CLKBLK_1;
 on stdcore[IFM_CORE]: clock clk_pwm = XS1_CLKBLK_REF;
 
-void xscope_initialise_1()
-{
-	{
-		xscope_register(2, XSCOPE_CONTINUOUS, "0 actual_velocity", XSCOPE_INT,	"n",
-							XSCOPE_CONTINUOUS, "1 target_velocity", XSCOPE_INT, "n");
-
-		xscope_config_io(XSCOPE_IO_BASIC);
-	}
-	return;
-}
 
 
 /* Test Profile Velocity function */
@@ -122,15 +110,12 @@ int main(void)
 		/* Ethercat Communication Handler Loop */
 		on stdcore[COM_CORE] :
 		{
-			ecat_init();
-			ecat_handler(coe_out, coe_in, eoe_out, eoe_in, eoe_sig, foe_out,\
-					foe_in, pdo_out, pdo_in);
+
 		}
 
 		/* Firmware Update Loop */
 		on stdcore[COM_CORE] :
 		{
-			firmware_update(foe_out, foe_in, c_sig_1); 		// firmware update over EtherCat
 		}
 
 		/* Test Profile Velocity function */
@@ -181,7 +166,7 @@ int main(void)
 					init_commutation_param(commutation_params, hall_params, MAX_NOMINAL_SPEED); // initialize commutation parameters
 					commutation_sinusoidal(c_hall_p1,  c_qei_p2, c_signal, c_watchdog, 	\
 							c_commutation_p1, c_commutation_p2, c_commutation_p3,		\
-							c_pwm_ctrl, hall_params, qei_params, commutation_params);
+							c_pwm_ctrl, hall_params, qei_params, commutation_params, p_ifm_esf_rstn_pwml_pwmh, p_ifm_coastn);
 				}
 
 				/* Watchdog Server */

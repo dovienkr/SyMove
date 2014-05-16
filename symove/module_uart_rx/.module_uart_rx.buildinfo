@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allbuildresults>
+<buildresults component="module_uart_rx" packagename="xm-local-sc_uart(2.3.0rc0)" packageversion="2.3.0rc0" toolsversion="latest">
+<buildresult>
+<configuration>
+<parameter id="rxBufferSize" value="8"/>
+<parameter id="rxInitialBaudRate" value="115200"/>
+<parameter id="rxInitialBPC" value="8"/>
+<parameter id="rxInitialStopBits" value="1"/>
+<parameter id="rxInitialParity" value="UART_RX_PARITY_EVEN"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="2744"/>
+<resourceusageitem id="datamemory" value="504"/>
+<resourceusageitem id="ports1bit" value="1"/>
+<resourceusageitem id="ports4bit" value="0"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="1"/>
+</resourceusage>
+</buildresult>
+<buildresult>
+<configuration>
+<parameter id="rxBufferSize" value="64"/>
+<parameter id="rxInitialBaudRate" value="115200"/>
+<parameter id="rxInitialBPC" value="8"/>
+<parameter id="rxInitialStopBits" value="1"/>
+<parameter id="rxInitialParity" value="UART_RX_PARITY_EVEN"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="2744"/>
+<resourceusageitem id="datamemory" value="504"/>
+<resourceusageitem id="ports1bit" value="1"/>
+<resourceusageitem id="ports4bit" value="0"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="1"/>
+</resourceusage>
+</buildresult>
+</buildresults>
+</allbuildresults>

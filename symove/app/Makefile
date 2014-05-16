@@ -10,7 +10,7 @@ APP_NAME =
 
 # The USED_MODULES variable lists other module used by the application.
 
-USED_MODULES = sc_pwm/module_pwm_symmetrical sc_sncn_motorctrl_sin/module_adc sc_sncn_motorctrl_sin/module_blocks sc_sncn_motorctrl_sin/module_common sc_sncn_motorctrl_sin/module_commutation sc_sncn_motorctrl_sin/module_ctrl_loops sc_sncn_motorctrl_sin/module_hall sc_sncn_motorctrl_sin/module_profile sc_sncn_motorctrl_sin/module_qei sc_sncn_motorctrl_sin/module_sm sc_somanet-base/module_nodeconfig
+USED_MODULES = module_hokuyo_pbs module_uart_rx module_uart_tx module_pwm_symmetrical sc_sncn_motorctrl_sin/module_adc sc_sncn_motorctrl_sin/module_blocks sc_sncn_motorctrl_sin/module_common sc_sncn_motorctrl_sin/module_commutation sc_sncn_motorctrl_sin/module_ctrl_loops sc_sncn_motorctrl_sin/module_hall sc_sncn_motorctrl_sin/module_profile sc_sncn_motorctrl_sin/module_qei sc_sncn_motorctrl_sin/module_sm sc_somanet-base/module_nodeconfig  
 #
 
 # The flags passed to xcc when building the application

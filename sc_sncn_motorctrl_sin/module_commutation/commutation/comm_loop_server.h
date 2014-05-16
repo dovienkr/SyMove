@@ -70,4 +70,9 @@ void commutation_sinusoidal(chanend c_hall, chanend c_qei, chanend c_signal, cha
 		chanend c_pwm_ctrl, hall_par &hall_params, qei_par &qei_params, commutation_par &commutation_params, out port p_ifm_esf_rstn_pwml_pwmh, out port p_ifm_coastn);
 
 
+void commutation_sinusoidal_nowatchdog(chanend c_hall, chanend c_qei, chanend c_signal,
+        chanend  c_commutation_p1, chanend  c_commutation_p2, chanend  c_commutation_p3,
+        chanend c_pwm_ctrl, hall_par &hall_params, qei_par &qei_params, commutation_par &commutation_params,
+        out port p_ifm_esf_rstn_pwml_pwmh, out port p_ifm_coastn);
+
 

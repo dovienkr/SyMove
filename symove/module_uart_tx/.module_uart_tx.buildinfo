@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allbuildresults>
+<buildresults component="module_uart_tx" packagename="xm-local-sc_uart(2.3.0rc0)" packageversion="2.3.0rc0" toolsversion="latest">
+<buildresult>
+<configuration>
+<parameter id="txBufferSize" value="8"/>
+<parameter id="txInitialBaudRate" value="115200"/>
+<parameter id="txInitialBPC" value="8"/>
+<parameter id="txInitialStopBits" value="1"/>
+<parameter id="txInitialParity" value="UART_TX_PARITY_EVEN"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="4518"/>
+<resourceusageitem id="datamemory" value="1810"/>
+<resourceusageitem id="ports1bit" value="1"/>
+<resourceusageitem id="ports4bit" value="0"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="1"/>
+</resourceusage>
+</buildresult>
+<buildresult>
+<configuration>
+<parameter id="txBufferSize" value="64"/>
+<parameter id="txInitialBaudRate" value="115200"/>
+<parameter id="txInitialBPC" value="8"/>
+<parameter id="txInitialStopBits" value="1"/>
+<parameter id="txInitialParity" value="UART_TX_PARITY_EVEN"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="4518"/>
+<resourceusageitem id="datamemory" value="1810"/>
+<resourceusageitem id="ports1bit" value="1"/>
+<resourceusageitem id="ports4bit" value="0"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="1"/>
+</resourceusage>
+</buildresult>
+</buildresults>
+</allbuildresults>

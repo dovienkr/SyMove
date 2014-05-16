@@ -17,11 +17,6 @@ extern in buffered  port:32 p_ifm_adc_misoa_node_2;
 extern in buffered  port:32 p_ifm_adc_misob_node_2;
 extern buffered out port:32 p_ifm_adc_sclk_conv_mosib_mosia_node_2;
 
-extern in buffered  port:32 p_ifm_adc_misoa_node_3;
-extern in buffered  port:32 p_ifm_adc_misob_node_3;
-extern buffered out port:32 p_ifm_adc_sclk_conv_mosib_mosia_node_3;
-
-
 /* A4935 control ports */
 extern out port p_ifm_coastn_node_0;
 extern out port p_ifm_esf_rstn_pwml_pwmh_node_0;
@@ -37,12 +32,6 @@ extern out port p_ifm_coastn_node_2;
 extern out port p_ifm_esf_rstn_pwml_pwmh_node_2;
 extern     port p_ifm_ff1_node_2;
 extern     port p_ifm_ff2_node_2;
-
-extern out port p_ifm_coastn_node_3;
-extern out port p_ifm_esf_rstn_pwml_pwmh_node_3;
-extern     port p_ifm_ff1_node_3;
-extern     port p_ifm_ff2_node_3;
-
 
 /* BLDC Motor, default port mode */
 extern           in  port p_ifm_hall_node_0;
@@ -63,13 +52,6 @@ extern           in  port p_ifm_dummy_port_node_2; /* needed for PWM ADC-trigger
 extern  buffered out port:32 p_ifm_motor_hi_node_2[3]; /* = { Hi A, Hi B, Hi C } */
 extern  buffered out port:32 p_ifm_motor_lo_node_2[3]; /* = { Hi A, Hi B, Hi C } */
 
-extern           in  port p_ifm_hall_node_3;
-extern           in  port p_ifm_encoder_node_3;
-extern           in  port p_ifm_dummy_port_node_3; /* needed for PWM ADC-trigger timing */
-extern  buffered out port:32 p_ifm_motor_hi_node_3[3]; /* = { Hi A, Hi B, Hi C } */
-extern  buffered out port:32 p_ifm_motor_lo_node_3[3]; /* = { Hi A, Hi B, Hi C } */
-
-
 /* LEDs, Watchdog */
 extern out port p_ifm_shared_leds_wden_node_0; /* BlueGreenRed_WDEN */
 extern out port p_ifm_wd_tick_node_0;
@@ -79,9 +61,6 @@ extern out port p_ifm_wd_tick_node_1;
 
 extern out port p_ifm_shared_leds_wden_node_2; /* BlueGreenRed_WDEN */
 extern out port p_ifm_wd_tick_node_2;
-
-extern out port p_ifm_shared_leds_wden_node_3; /* BlueGreenRed_WDEN */
-extern out port p_ifm_wd_tick_node_3;
 
 /* Expansion Port */
 extern port p_ifm_ext_d0_node_0;
@@ -98,8 +77,3 @@ extern port p_ifm_ext_d0_node_2;
 extern port p_ifm_ext_d1_node_2;
 extern port p_ifm_ext_d2_node_2;
 extern port p_ifm_ext_d3_node_2;
-
-extern port p_ifm_ext_d0_node_3;
-extern port p_ifm_ext_d1_node_3;
-extern port p_ifm_ext_d2_node_3;
-extern port p_ifm_ext_d3_node_3;

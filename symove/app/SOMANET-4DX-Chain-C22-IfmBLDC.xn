@@ -5,7 +5,7 @@
 
 	<Type>Board</Type>
 	<Name>SOMANET-4DX-Chain-C22-IfmBLDC</Name>
-	 
+
   <Declarations>
     <Declaration>core stdcore[16]</Declaration>
   </Declarations>
@@ -275,7 +275,7 @@
   <!-- ##########################FIRST SOMANET C22 END########################## -->
     
   <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="8,8">
+    <Link Encoding="2wire" Delays="4,4">
       <LinkEndpoint NodeId="3" Link="XLB"/>
       <LinkEndpoint NodeId="7" Link="XLB"/> 
     </Link>
@@ -330,7 +330,7 @@
   <!-- ##########################SECOND SOMANET C22 END########################## -->
 
   <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="6,6">
+    <Link Encoding="2wire" Delays="4,4">
       <LinkEndpoint NodeId="4" Link="XLB"/>
       <LinkEndpoint NodeId="8" Link="XLA"/> 
     </Link>

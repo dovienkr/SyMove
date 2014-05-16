@@ -104,8 +104,8 @@ on stdcore[15]: out port p_ifm_shared_leds_wden_node_3 = XS1_PORT_4B; /* BlueGre
 on stdcore[15]: out port p_ifm_wd_tick_node_3 = XS1_PORT_1F;
 
 /* Expansion Port */
-on stdcore[3]: port p_ifm_ext_d0_node_0 = XS1_PORT_1A;
-on stdcore[3]: port p_ifm_ext_d1_node_0 = XS1_PORT_1E;
+//on stdcore[3]: port p_ifm_ext_d0_node_0 = XS1_PORT_1A;
+//on stdcore[3]:  port p_ifm_ext_d1_node_0 = XS1_PORT_1E;
 on stdcore[3]: port p_ifm_ext_d2_node_0 = XS1_PORT_1J;
 on stdcore[3]: port p_ifm_ext_d3_node_0 = XS1_PORT_1B;
 
