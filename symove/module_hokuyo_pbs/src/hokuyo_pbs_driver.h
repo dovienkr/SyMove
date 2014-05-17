@@ -28,8 +28,13 @@
 		unsigned int ranges_mm[NUMBER_OF_RANGE_READINGS];
 	}laser_data_t;
 
+	interface LaserData {
+	    void get(unsigned length[]);
+	};
+
 	// Main function for device thread. Must run always in your main.
-	void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data);
+	//void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data);
+	void run_scanner(chanend c_uartRX, chanend c_uartTX, interface LaserData client iLaserData);
 
 	int send_distance_acquisition_request(chanend c_uartTX);
 	int send_authentication_code(unsigned char pbsPackage[], chanend c_uartTX);
@@ -45,7 +50,8 @@
 	unsigned int combine_two_chars_to_int(unsigned char MSB, unsigned char LSB);
 	int write_buffer_uart(unsigned char chars[], unsigned int dwToWrite, chanend c_uartTX);
 	//Laser data publisher (server). Publishes data from the main thread over the c_laser_data cannel.
-	void publish_laser_data(unsigned int pPbsDataMm[], unsigned int lengthMm, unsigned int id, chanend c_laser_data);
+	//void publish_laser_data(unsigned int pPbsDataMm[], unsigned int lengthMm, unsigned int id, chanend c_laser_data);
+	void publish_laser_data(unsigned int pbsPackageMm[], unsigned int lengthMm, unsigned int id, interface LaserData client iLaserData);
 	//Laser data subscriber (client). Must be called in you application thread.
 	void get_laser_data(chanend c_laser_data, laser_data_t &laser_data_packet);
 

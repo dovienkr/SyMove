@@ -480,7 +480,8 @@ int write_buffer_uart(unsigned char chars[], unsigned int dwToWrite, chanend c_u
 
 
 // The main driver thread
-void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data)
+//void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data)
+void run_scanner(chanend c_uartRX, chanend c_uartTX, interface LaserData client iLaserData)
 {
 
 
@@ -673,7 +674,8 @@ void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data)
 							//publish the data
 							if (lengthMm == NUMBER_OF_RANGE_READINGS)
 							{
-								publish_laser_data(pbsPackageMm, lengthMm, scan_id, c_laser_data);
+								//publish_laser_data(pbsPackageMm, lengthMm, scan_id, c_laser_data);
+							    publish_laser_data(pbsPackageMm, lengthMm, scan_id, iLaserData);
 							}
 
 							scan_id++;
@@ -743,7 +745,8 @@ void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data)
 						//publish the data
 						if (lengthMm == NUMBER_OF_RANGE_READINGS)
 						{
-							publish_laser_data(pbsPackageMm, lengthMm, scan_id, c_laser_data);
+							//publish_laser_data(pbsPackageMm, lengthMm, scan_id, c_laser_data);
+						    publish_laser_data(pbsPackageMm, lengthMm, scan_id, iLaserData);
 						}
 
 //						printstr("Data package with an id ");printint(scan_id);printstrln(" is published");
@@ -798,9 +801,11 @@ void run_scanner(chanend c_uartRX, chanend c_uartTX, chanend c_laser_data)
 }
 
 /// Function to send the laser data to a concumer over a channel
-void publish_laser_data(unsigned int pbsPackageMm[], unsigned int lengthMm, unsigned int id, chanend c_laser_data)
+//void publish_laser_data(unsigned int pbsPackageMm[], unsigned int lengthMm, unsigned int id, chanend c_laser_data)
+void publish_laser_data(unsigned int pbsPackageMm[], unsigned int lengthMm, unsigned int id, interface LaserData client iLaserData)
+
 {
-	c_laser_data <: lengthMm;
+	/*c_laser_data <: lengthMm;
 	c_laser_data <: id;
 	for(unsigned int i=0; i < lengthMm; i++)
 	{
@@ -813,8 +818,17 @@ void publish_laser_data(unsigned int pbsPackageMm[], unsigned int lengthMm, unsi
 			c_laser_data <: MAX_RANGE_MM;
 		}
 
-	}
+	}*/
 
+    for(unsigned int i=0; i < lengthMm; i++)
+        {
+            if(pbsPackageMm[i] > MAX_RANGE_MM){
+                pbsPackageMm[i] = MAX_RANGE_MM;
+            }
+        }
+
+
+	iLaserData.get(pbsPackageMm);
 }
 
 /// Laser data concumer

@@ -5,7 +5,7 @@
 
 	<Type>Board</Type>
 	<Name>SOMANET-4DX-Chain-C22-IfmBLDC</Name>
-	 
+
   <Declarations>
     <Declaration>core stdcore[16]</Declaration>
   </Declarations>
@@ -136,7 +136,7 @@
 	    			<Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK_2"/>
 	    			<Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI_2"/>
 	  		</Core>
-		</Node>ReferenceFrequency
+		</Node>
 		<Node Id="9" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
 	  		<Boot>
 	    			<Source Location="XMOSLINK"/>
@@ -246,10 +246,10 @@
     </Link>
 
     <!-- L2-1 to L2-2 -->
-    <!--<Link Encoding="5wire" Delays="4,4">
+    <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="1" Link="XLA"/>
       <LinkEndpoint NodeId="2" Link="XLA"/>
-    </Link>-->
+    </Link>
     <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="1" Link="XLB"/>
       <LinkEndpoint NodeId="2" Link="XLB"/>
@@ -275,7 +275,7 @@
   <!-- ##########################FIRST SOMANET C22 END########################## -->
     
   <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="8,8">
+    <Link Encoding="2wire" Delays="4,4">
       <LinkEndpoint NodeId="3" Link="XLB"/>
       <LinkEndpoint NodeId="7" Link="XLB"/> 
     </Link>
@@ -301,10 +301,10 @@
     </Link>
 
     <!-- L2-1 to L2-2 -->
-   <!-- <Link Encoding="5wire" Delays="4,4">
+    <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="5" Link="XLA"/>
       <LinkEndpoint NodeId="6" Link="XLA"/>
-    </Link>-->
+    </Link>
     <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="5" Link="XLB"/>
       <LinkEndpoint NodeId="6" Link="XLB"/>
@@ -330,9 +330,9 @@
   <!-- ##########################SECOND SOMANET C22 END########################## -->
 
   <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="6,6">
+    <Link Encoding="2wire" Delays="4,4">
       <LinkEndpoint NodeId="4" Link="XLB"/>
-      <LinkEndpoint NodeId="8" Link="XLB"/> 
+      <LinkEndpoint NodeId="8" Link="XLA"/> 
     </Link>
   <!-- ###########SOMANET-INTER-CONNECTION########### -->
  
@@ -356,10 +356,10 @@
     </Link>
 
     <!-- L2-1 to L2-2 -->
- <!--   <Link Encoding="5wire" Delays="4,4">
+    <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="9" Link="XLA"/>
       <LinkEndpoint NodeId="10" Link="XLA"/>
-    </Link>-->
+    </Link>
     <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="9" Link="XLB"/>
       <LinkEndpoint NodeId="10" Link="XLB"/>
@@ -410,10 +410,10 @@
     </Link>
 
     <!-- L2-1 to L2-2 -->
-<!--    <Link Encoding="5wire" Delays="4,4">
+    <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="13" Link="XLA"/>
       <LinkEndpoint NodeId="14" Link="XLA"/>
-    </Link>-->
+    </Link>
     <Link Encoding="5wire" Delays="4,4">
       <LinkEndpoint NodeId="13" Link="XLB"/>
       <LinkEndpoint NodeId="14" Link="XLB"/>

@@ -61,6 +61,10 @@ interface Wheel{
     void velocity(int vel);
 };
 
+interface Velocities{
+    void get(int a, int b, int c, int d);
+};
+
 void init(interface Initialization server initW){
     select {
         case initW.init(int i):
@@ -189,15 +193,18 @@ int getVelocity(interface Wheel server wheel){
         chan c_getDangerousPoints;
         chan c_movementPossible;
 
-        interface Initialization initRR;
-        interface Initialization initRL;
-        interface Initialization initFR;
-        interface Initialization initFL;
+        //interface Initialization initRR;
+        //interface Initialization initRL;
+        //interface Initialization initFR;
+        //interface Initialization initFL;
 
         interface Wheel iWheelFL;
         interface Wheel iWheelFR;
         interface Wheel iWheelRR;
         interface Wheel iWheelRL;
+
+        interface Velocities iVelocities;
+        interface LaserData iLaserData;
 
         chan c_led;
 
@@ -211,9 +218,9 @@ int getVelocity(interface Wheel server wheel){
                 //        init(initRL);
 
                 timer t0;
-                int a,b,c,d;
+             //   int a,b,c,d;
 
-                wait_ms(1500,0,t0);
+                wait_ms(1500,0,t0); //delay for evetything to get started
 
 
                 unsigned get;
@@ -228,27 +235,17 @@ int getVelocity(interface Wheel server wheel){
                 while(1){
 
                     c_getJoystick <: 1;
-                    for(int i=0;i<4;i++){
-                        select{
 
-                            case c_va :> a:
-                            break;
-                            case c_vb :> b:
-                            break;
-                            case c_vc :> c:
-                            break;
-                            case c_vd :> d:
-                            break;
-                            //   case c_movementPossible :> get:
-                            //       break;
+                    select{
+                        case iVelocities.get(int a, int b, int c, int d):
 
-                        }
+                            setVelocity(a,iWheelFL);
+                            setVelocity(b,iWheelFR);
+                            setVelocity(c,iWheelRR);
+                            setVelocity(d,iWheelRL);
+                            break;
+
                     }
-
-                    setVelocity(a,iWheelFL);
-                    setVelocity(b,iWheelFR);
-                    setVelocity(c,iWheelRR);
-                    setVelocity(d,iWheelRL);
 
                     wait_ms(50, 0, t0);
                 }
@@ -346,31 +343,6 @@ int getVelocity(interface Wheel server wheel){
             }
             on stdcore[5] :
             {
-                //        int vx, vy;
-                //        unsigned nOfDangerousPoints;
-                //        unsigned dangerousPoints[NUMBER_OF_RANGE_READINGS];
-                //       unsigned dangerousLengths[NUMBER_OF_RANGE_READINGS];
-
-                //       while(1){
-                    //           select{
-                        //               case c_vx :> vx:
-                        //                   c_vy :> vy;
-
-                        //                   c_getDangerousPoints <: 1;
-                        //                  select{
-                            //                      case c_getDangerousPoints :> nOfDangerousPoints:
-                            //                          for(int i=0;i<nOfDangerousPoints;i++){
-                                //                              c_getDangerousPoints :> dangerousPoints[i];
-                                //                              c_getDangerousPoints :> dangerousLengths[i];
-                            //                          }
-                            //                         break;
-                        //                 }
-
-                        //return = isMovementPossible();
-                        //c_movementPossible <: return;
-                        //                break;
-                    //       }
-                //   }
 
                 int joystick_x, joystick_y;
                 float vx, vy;
@@ -378,7 +350,7 @@ int getVelocity(interface Wheel server wheel){
                 unsigned get;
                 timer t0;
 
-                wait_ms(500, 5, t0);
+                wait_ms(500, 5, t0); //delay for ADC server to get initialised
 
                 for(int i= 0; i<20;i++){
 
@@ -401,10 +373,8 @@ int getVelocity(interface Wheel server wheel){
 
                         {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
 
-                        c_va <: a;
-                        c_vb <: b;
-                        c_vc <: c;
-                        c_vd <: d;
+                        iVelocities.get(a,b,c,d);
+
                         break;
                     }
                 }
@@ -569,7 +539,8 @@ int getVelocity(interface Wheel server wheel){
                     {
                         timer t0;
                         wait_ms(1000,12, t0); //delay for uarts to get initialised
-                        run_scanner(c_chanRX, c_chanTX, c_laser_data);
+                       // run_scanner(c_chanRX, c_chanTX, c_laser_data);
+                        run_scanner(c_chanRX, c_chanTX, iLaserData);
                     }
 
                 }
@@ -585,45 +556,24 @@ int getVelocity(interface Wheel server wheel){
 
                 laser_data_t laser_data_packet;
                 init_data(laser_data_packet);
-                //     unsigned nOfDangerousPoints= 0;
-                //     unsigned dangerousPoints[NUMBER_OF_RANGE_READINGS];
-                //     unsigned dangerousLengths[NUMBER_OF_RANGE_READINGS];
-                //     unsigned get;
 
+                unsigned startFLAG = 0;
                 while(1){
                     select
                     {
-                        case c_laser_data :> laser_data_packet.length:
-                        //nOfDangerousPoints = 0;
-                        c_laser_data :> laser_data_packet.id;
-                        for (unsigned i = 0; i < NUMBER_OF_RANGE_READINGS; i++)
-                        {
-                            c_laser_data :> laser_data_packet.ranges_mm[i];
-                            //           if(laser_data_packet.ranges_mm[i]<FIRST_DANGEROUS_THRESHOLD){
-                                //   dangerousPoints[nOfDangerousPoints] = i;
-                                //   dangerousLengths[nOfDangerousPoints++] = laser_data_packet.ranges_mm[i];
-                            //           }
-                        }
-
+                        case iLaserData.get(unsigned length[]):
+                                 if(length[60]!=0 & length[60]<1000){
+                                     startFLAG = 1;
+                                 }
                         break;
 
-                        //          case c_getDangerousPoints :> get:
 
-                        //            c_getDangerousPoints <: nOfDangerousPoints;
-                        //          for(unsigned ii=0;ii<nOfDangerousPoints;ii++){
-                            //            c_getDangerousPoints <: dangerousPoints[ii];
-                            //          c_getDangerousPoints <: dangerousLengths[ii];
-                        //    }
-                        //  break;
                     }
-                    if(laser_data_packet.ranges_mm[60]==0 | laser_data_packet.ranges_mm[60]>1000){
-
-                        }else{
-
+                    if(startFLAG){
                         break;
                     }
-
                 }
+
                 p_core_leds_node_3[0] <: 1;
                 p_core_leds_node_3[1] <: 0;
                 p_core_leds_node_3[2] <: 1;
@@ -633,7 +583,6 @@ int getVelocity(interface Wheel server wheel){
             }
             on stdcore[14] :
             {
-                //   printstrln("aaa");
                 //                printstrln("core 15\n");
 
                 par

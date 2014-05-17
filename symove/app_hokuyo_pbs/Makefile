@@ -2,7 +2,7 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling
 #TARGET = C22-IfmDC900-XScope
-TARGET = SOMANET-C22-ComECAT-IfmBLDC-XScope
+TARGET = SOMANET-4DX-Chain-C22-IfmBLDC
 
 # The APP_NAME variable determines the name of the final .xe file. It should
 # not include the .xe postfix. If left blank the name will default to
@@ -10,7 +10,7 @@ TARGET = SOMANET-C22-ComECAT-IfmBLDC-XScope
 APP_NAME = app_hokuyo_pbs
 
 # The USED_MODULES variable lists other module used by the application.
-USED_MODULES = module_hokuyo_pbs module_pwm_symmetrical module_uart_rx module_uart_tx sc_sncn_motorctrl_sin/module_adc sc_sncn_motorctrl_sin/module_blocks sc_sncn_motorctrl_sin/module_common sc_sncn_motorctrl_sin/module_commutation sc_sncn_motorctrl_sin/module_ctrl_loops sc_sncn_motorctrl_sin/module_hall sc_sncn_motorctrl_sin/module_profile sc_sncn_motorctrl_sin/module_qei sc_sncn_motorctrl_sin/module_sm sc_somanet-base/module_nodeconfig
+USED_MODULES = module_hokuyo_pbs module_pwm_symmetrical module_uart_rx module_uart_tx sc_somanet-base/module_nodeconfig
 
 # The flags passed to xcc when building the application
 # You can also set the following to override flags for a particular language:
