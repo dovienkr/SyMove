@@ -53,9 +53,9 @@ XS1_PORT_1K }; /* Blue */
 buffered in port:1 p_rx = on stdcore[12] : XS1_PORT_1F;
 out port p_tx = on stdcore[12] : XS1_PORT_1G;
 
-interface Initialization {
+/*interface Initialization {
     void init(int i);
-};
+};*/
 
 interface Wheel{
     void velocity(int vel);
@@ -65,7 +65,7 @@ interface Velocities{
     void get(int a, int b, int c, int d);
 };
 
-void init(interface Initialization server initW){
+/*void init(interface Initialization server initW){
     select {
         case initW.init(int i):
         //    printstrln("Wheel Initialized");
@@ -75,11 +75,7 @@ void init(interface Initialization server initW){
 
 void initializeWheel(interface Initialization client i){
     i.init(1);
-}
-
-void setVelocity(int vel, interface Wheel client wheel){
-    wheel.velocity(vel);
-}
+}*/
 
 int getVelocity(interface Wheel server wheel){
     select{
@@ -212,10 +208,6 @@ int getVelocity(interface Wheel server wheel){
         {
             on stdcore[0] :
             {
-                // init(initFL);
-                //        init(initFR);
-                //        init(initRR);
-                //        init(initRL);
 
                 timer t0;
              //   int a,b,c,d;
@@ -239,12 +231,11 @@ int getVelocity(interface Wheel server wheel){
                     select{
                         case iVelocities.get(int a, int b, int c, int d):
 
-                            setVelocity(a,iWheelFL);
-                            setVelocity(b,iWheelFR);
-                            setVelocity(c,iWheelRR);
-                            setVelocity(d,iWheelRL);
+                            iWheelFL.velocity(a);
+                            iWheelFR.velocity(b);
+                            iWheelRR.velocity(c);
+                            iWheelRL.velocity(d);
                             break;
-
                     }
 
                     wait_ms(50, 0, t0);
@@ -539,7 +530,6 @@ int getVelocity(interface Wheel server wheel){
                     {
                         timer t0;
                         wait_ms(1000,12, t0); //delay for uarts to get initialised
-                       // run_scanner(c_chanRX, c_chanTX, c_laser_data);
                         run_scanner(c_chanRX, c_chanTX, iLaserData);
                     }
 
@@ -566,7 +556,6 @@ int getVelocity(interface Wheel server wheel){
                                      startFLAG = 1;
                                  }
                         break;
-
 
                     }
                     if(startFLAG){

@@ -168,7 +168,6 @@ int main(void) {
                                {
                                   case iLaserData.get(unsigned length[]):
                                         nOfDangerousPoints = 0;
-                                      //  unsigned copyTest[105];
                                         for(unsigned i=5;i<110;i++){ //firsts and last samples are zeros
                                             if(length[i]!=0 & length[i]<600){
                                                 dangerousPoints[nOfDangerousPoints] = i-5; //offset, first samples are zeros
