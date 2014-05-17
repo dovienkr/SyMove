@@ -149,8 +149,8 @@ int main(void) {
                    p_core_leds_node_3[1] <: 0;
                    p_core_leds_node_3[2] <: 1;
 
-                   laser_data_t laser_data_packet;
-                   init_data(laser_data_packet);
+                 //  laser_data_t laser_data_packet;
+                //   init_data(laser_data_packet);
 
                    unsigned nOfDangerousPoints= 0;
                    unsigned dangerousPoints[105];
@@ -197,7 +197,7 @@ int main(void) {
                           // p_core_leds_node_3[2] <: 1;
                        }
                        {
-                                     int vx= 100;
+                                     int vx= 0;
                                      int vy= 100;
 
                                      timer t0;

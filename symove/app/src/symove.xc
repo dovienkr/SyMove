@@ -36,6 +36,8 @@
 #include "uart_rx.h"
 #include "uart_tx.h"
 
+#include <trigonometry.h>
+
 on stdcore[3]: clock clk_adc = XS1_CLKBLK_1;
 on stdcore[3]: clock clk_pwm = XS1_CLKBLK_REF;
 on stdcore[7]: clock clk_adc_1 = XS1_CLKBLK_1;
@@ -57,12 +59,24 @@ out port p_tx = on stdcore[12] : XS1_PORT_1G;
     void init(int i);
 };*/
 
+interface Points {
+    void get(unsigned n, unsigned index[105],unsigned length[105]);
+};
+
 interface Wheel{
     void velocity(int vel);
 };
 
 interface Velocities{
     void get(int a, int b, int c, int d);
+};
+
+interface Vector{
+  void get(int vx, int vy);
+};
+
+interface MovingPermit{
+    void permit(unsigned p);
 };
 
 /*void init(interface Initialization server initW){
@@ -106,19 +120,19 @@ int getVelocity(interface Wheel server wheel){
         float vx, vy;
 
         if (xSignal < (X_ZERO - ZERO_ERROR)){
-            vx = 1.0 * (X_ZERO - xSignal) / (X_ZERO - X_MIN);
+            vx = - 1.0 * (X_ZERO - xSignal) / (X_ZERO - X_MIN);
             vx = vx * MAX_LINEAL_VELOCITY;
             }else if(xSignal > (X_ZERO + ZERO_ERROR)){
-            vx = - 1.0 * (xSignal - X_ZERO) / (X_MAX - X_ZERO);
+            vx = 1.0 * (xSignal - X_ZERO) / (X_MAX - X_ZERO);
             vx = vx * MAX_LINEAL_VELOCITY;
             }else{
             vx = 0;
         }
         if (ySignal < (Y_ZERO - ZERO_ERROR)){
-            vy =  1.0 * (Y_ZERO - ySignal) / (Y_ZERO - Y_MIN);
+            vy = - 1.0 * (Y_ZERO - ySignal) / (Y_ZERO - Y_MIN);
             vy = vy * MAX_LINEAL_VELOCITY;
             }else if(ySignal > (Y_ZERO+ ZERO_ERROR)){
-            vy =  - 1.0 * (ySignal - Y_ZERO) / (Y_MAX- Y_ZERO);
+            vy =  1.0 * (ySignal - Y_ZERO) / (Y_MAX- Y_ZERO);
             vy = vy * MAX_LINEAL_VELOCITY;
             }else{
             vy = 0;
@@ -202,6 +216,12 @@ int getVelocity(interface Wheel server wheel){
         interface Velocities iVelocities;
         interface LaserData iLaserData;
 
+        chan cGetDangerousPoints;
+        interface Points iDangerousPoints;
+
+        interface Vector iVector;
+        interface MovingPermit iMovingPermit;
+
         chan c_led;
 
         par
@@ -210,35 +230,52 @@ int getVelocity(interface Wheel server wheel){
             {
 
                 timer t0;
-             //   int a,b,c,d;
 
-                wait_ms(1500,0,t0); //delay for evetything to get started
+                wait_ms(2500,0,t0); //delay for evetything to get started
 
 
-                unsigned get;
+  /*              unsigned get;
                 select{
                     case c_start :> get:
                     break;
-                }
+                }*/
 
                 //    p_core_leds[0] <: 1;
                 //    p_core_leds[1] <: 0;
-
+                int newA,newB,newC,newD,newP;
                 while(1){
 
                     c_getJoystick <: 1;
 
-                    select{
-                        case iVelocities.get(int a, int b, int c, int d):
-
-                            iWheelFL.velocity(a);
-                            iWheelFR.velocity(b);
-                            iWheelRR.velocity(c);
-                            iWheelRL.velocity(d);
+                    for(int i=0;i<2;i++){
+                        select{
+                            case iVelocities.get(int a, int b, int c, int d):
+                            newA = a;
+                            newB = b;
+                            newC = c;
+                            newD = d;
                             break;
+
+                            case iMovingPermit.permit(unsigned p):
+                            newP = p;
+                            break;
+                        }
                     }
 
-                    wait_ms(50, 0, t0);
+                    if(newP){
+                        iWheelFL.velocity(newA);
+                        iWheelFR.velocity(newB);
+                        iWheelRR.velocity(newC);
+                        iWheelRL.velocity(newD);
+
+                    }else{
+                        iWheelFL.velocity(0);
+                        iWheelFR.velocity(0);
+                        iWheelRR.velocity(0);
+                        iWheelRL.velocity(0);
+                    }
+
+                    wait_ms(300, 0, t0);
                 }
             }
 
@@ -354,15 +391,20 @@ int getVelocity(interface Wheel server wheel){
                         case c_getJoystick :> get:
                         {joystick_y,joystick_x} = get_adc_external_potentiometer_ad7949(c_adc); //y=port1, x=port2
 
-                        //      printintln(joystick_y);
+                        //     printintln(joystick_y);
                         //     printintln(joystick_x);
 
                         {vx, vy} = convertJoystick2Vector(joystick_x, joystick_y);
 
+                        iVector.get(12*vx,12*vy); // send the vector to obtain moving permit
                         //      c_vx <: vx;
                         //      c_vy <: vy;
+                        if(vy>=0){
+                            {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
+                        }else{
+                            {a,b,c,d} = convertVector2Vel(0,0,3*vx);
+                        }
 
-                        {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
 
                         iVelocities.get(a,b,c,d);
 
@@ -538,18 +580,48 @@ int getVelocity(interface Wheel server wheel){
             on stdcore[13] :
             {
 
-                p_core_leds_node_3[0] <: 0;
-                p_core_leds_node_3[1] <: 1;
-                p_core_leds_node_3[2] <: 1;
+               p_core_leds_node_3[0] <: 1;
+               p_core_leds_node_3[1] <: 0;
+               p_core_leds_node_3[2] <: 1;
 
+                //laser_data_t laser_data_packet;
+                //init_data(laser_data_packet);
 
+                unsigned nOfDangerousPoints= 0;
+                unsigned dangerousPoints[105];
+                unsigned dangerousLengths[105];
+                unsigned get;
 
-                laser_data_t laser_data_packet;
-                init_data(laser_data_packet);
+                dangerousLengths[0] = 0;
+                par
+                {
 
-                unsigned startFLAG = 0;
-                while(1){
-                    select
+                    {
+                        unsigned startFLAG = 0;
+                        while(1){
+                            select
+                            {
+                                case iLaserData.get(unsigned length[]):
+                                    nOfDangerousPoints = 0;
+                                for(unsigned i=5;i<110;i++){ //firsts and last samples are zeros
+                                    if(length[i]!=0 & length[i]<600){
+                                        dangerousPoints[nOfDangerousPoints] = i-5; //offset, first samples are zeros
+                                        dangerousLengths[nOfDangerousPoints++] = length[i];
+                                    }
+                                }
+                //                if(length[60]!=0 & length[60]<1000){
+                //                    startFLAG = 1;
+                //                }
+
+                                break;
+
+                                case cGetDangerousPoints :> get:
+
+                                    iDangerousPoints.get(nOfDangerousPoints,dangerousPoints,dangerousLengths);
+                                break;
+                            }
+
+/*                    select
                     {
                         case iLaserData.get(unsigned length[]):
                                  if(length[60]!=0 & length[60]<1000){
@@ -557,19 +629,105 @@ int getVelocity(interface Wheel server wheel){
                                  }
                         break;
 
+                    }*/
+            //                if(startFLAG){
+            //                    break;
+            //                }
+                        }
+
+               // p_core_leds_node_3[0] <: 1;
+               // p_core_leds_node_3[1] <: 0;
+               // p_core_leds_node_3[2] <: 1;
+
+            //    c_start <: 1;
                     }
-                    if(startFLAG){
-                        break;
-                    }
-                }
+                    {
+                                  int VX= 0;
+                                  int VY= 100;
 
-                p_core_leds_node_3[0] <: 1;
-                p_core_leds_node_3[1] <: 0;
-                p_core_leds_node_3[2] <: 1;
+                                  timer t0;
 
-                c_start <: 1;
+                                  int pointsX[105], pointsY[105];
+                                  unsigned crashFLAG;
+                                  unsigned angle;
+                                  unsigned i;
 
-            }
+                                // wait_ms(1500,10,t0);
+
+                                 while(1)
+                                 {
+                                       //wait_ms(400,10,t0);
+                                       crashFLAG = 0;
+                                       select{
+                                           case iVector.get(int vx, int vy):
+                                                   VX = vx;
+                                                   VY = vy;
+
+                                                break;
+                                       }
+                                      // printintln(VX);
+                                      // printintln(VY);
+
+                                       if((VX | VY) & (VY>=0) ){
+
+                                           cGetDangerousPoints <: 1;
+                                       select{
+                                              case iDangerousPoints.get(unsigned n,unsigned index[105],unsigned length[105]):
+                                                   if(n>0){
+
+                                                      for(unsigned i=0;i<n;i++){
+                                                        angle  = index[i];
+                                                        pointsX[i] = ((int) length[i] * COS[angle])-VX;
+                                                        if(pointsX[i]<0)
+                                                            pointsX[i] *= -1;
+
+                                                        pointsY[i] = ((int) length[i] * SIN[angle])-VY;
+                                                        if(pointsY[i]<0)
+                                                            pointsY[i] *= -1;
+
+                                                        if((pointsX[i] + pointsY[i])<500){
+                                                           // printstrln("CRASH\n");
+                                                            crashFLAG = 1;
+                                                            break;
+                                                        }
+
+                                                       //  pointsX[i] = 0;
+                                                       //  pointsY[i] = 0;
+
+                                                      }
+                                                   }
+                                              break;
+                                       }
+                                       }
+
+
+                                      if(crashFLAG){
+                                          p_core_leds_node_3[0] <: 0;
+                                          p_core_leds_node_3[1] <: 1;
+                                          p_core_leds_node_3[2] <: 1;
+
+                                          iMovingPermit.permit(0);
+                                      }else{
+                                         p_core_leds_node_3[0] <: 1;
+                                         p_core_leds_node_3[1] <: 0;
+                                         p_core_leds_node_3[2] <: 1;
+
+                                         iMovingPermit.permit(1);
+                                      }
+
+                                                     // printintln(pointsY[0]);
+
+
+
+
+                                 }
+
+                              }
+
+                 }
+}
+
+
             on stdcore[14] :
             {
                 //                printstrln("core 15\n");
