@@ -79,18 +79,6 @@ interface MovingPermit{
     void permit(unsigned p);
 };
 
-/*void init(interface Initialization server initW){
-    select {
-        case initW.init(int i):
-        //    printstrln("Wheel Initialized");
-        break;
-    }
-}
-
-void initializeWheel(interface Initialization client i){
-    i.init(1);
-}*/
-
 int getVelocity(interface Wheel server wheel){
     select{
         case wheel.velocity(int vel):
@@ -275,7 +263,7 @@ int getVelocity(interface Wheel server wheel){
                         iWheelRL.velocity(0);
                     }
 
-                    wait_ms(300, 0, t0);
+                    wait_ms(200, 0, t0);
                 }
             }
 
