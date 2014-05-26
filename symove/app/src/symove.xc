@@ -70,6 +70,14 @@ interface Points {
     void get(unsigned n, unsigned index[105],unsigned length[105]);
 };
 
+interface MovingPermit{
+    unsigned obtain(void);
+};
+
+interface ObstacleReport{
+    void state(unsigned obstacles);
+};
+
 interface Wheel{
     void velocity(int vel);
 };
@@ -82,9 +90,9 @@ interface Vector{
   void get(int vx, int vy);
 };
 
-interface MovingPermit{
+/*interface MovingPermit{
     void permit(unsigned p);
-};
+};*/
 
 int getVelocity(interface Wheel server wheel){
     select{
@@ -115,10 +123,10 @@ int getVelocity(interface Wheel server wheel){
         float vx, vy;
 
         if (xSignal < (X_ZERO - ZERO_ERROR)){
-            vx = - 1.0 * (X_ZERO - xSignal) / (X_ZERO - X_MIN);
+            vx = 1.0 * (X_ZERO - xSignal) / (X_ZERO - X_MIN);
             vx = vx * MAX_LINEAL_VELOCITY;
             }else if(xSignal > (X_ZERO + ZERO_ERROR)){
-            vx = 1.0 * (xSignal - X_ZERO) / (X_MAX - X_ZERO);
+            vx = - 1.0 * (xSignal - X_ZERO) / (X_MAX - X_ZERO);
             vx = vx * MAX_LINEAL_VELOCITY;
             }else{
             vx = 0;
@@ -202,11 +210,9 @@ int getVelocity(interface Wheel server wheel){
         interface Velocities iVelocities;
         interface LaserData iLaserData;
 
-        chan cGetDangerousPoints;
-        interface Points iDangerousPoints;
-
         interface Vector iVector;
         interface MovingPermit iMovingPermit;
+        interface ObstacleReport iObstacleReport;
 
         chan coe_in;        // CAN from module_ethercat to consumer
         chan coe_out;       // CAN from consumer to module_ethercat
@@ -220,8 +226,6 @@ int getVelocity(interface Wheel server wheel){
         chan sig_1;
         chan c_flash_data;
         chan c_nodes[3];   // only upto 17 nodes on dx can have firmware updated - with current implementation structure
-
-        chan c_led;
 
         par
         {
@@ -246,36 +250,19 @@ int getVelocity(interface Wheel server wheel){
 
                     c_getJoystick <: 1;
 
-                    for(int i=0;i<2;i++){
-                        select{
+                         select{
                             case iVelocities.get(int a, int b, int c, int d):
-                            newA = a;
-                            newB = b;
-                            newC = c;
-                            newD = d;
+                                iWheelFL.velocity(a);
+                                iWheelFR.velocity(b);
+                                iWheelRR.velocity(c);
+                                iWheelRL.velocity(d);
+
                             break;
 
-                            case iMovingPermit.permit(unsigned p):
-                            newP = p;
-                            break;
                         }
+                        wait_ms(300, 0, t0);
                     }
 
-                    if(newP){
-                        iWheelFL.velocity(newA);
-                        iWheelFR.velocity(newB);
-                        iWheelRR.velocity(newC);
-                        iWheelRL.velocity(newD);
-
-                    }else{
-                        iWheelFL.velocity(0);
-                        iWheelFR.velocity(0);
-                        iWheelRR.velocity(0);
-                        iWheelRL.velocity(0);
-                    }
-
-                    wait_ms(300, 0, t0);
-                }
             }
 
             on stdcore[0] :
@@ -396,7 +383,7 @@ int getVelocity(interface Wheel server wheel){
                 int a,b,c,d;
                 unsigned get;
                 timer t0;
-
+                unsigned obstacleState = 0;
                 wait_ms(500, 5, t0); //delay for ADC server to get initialised
 
                 for(int i= 0; i<20;i++){
@@ -415,17 +402,24 @@ int getVelocity(interface Wheel server wheel){
 
                         {vx, vy} = convertJoystick2Vector(joystick_x, joystick_y);
 
-                        iVector.get(12*vx,12*vy); // send the vector to obtain moving permit
+                      //  iVector.get(12*vx,12*vy); // send the vector to obtain moving permit
                         //      c_vx <: vx;
                         //      c_vy <: vy;
-                        if(vy>=0){
-                            {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
-                        }else{
-                            {a,b,c,d} = convertVector2Vel(0,0,3*vx);
+                        if(vy<0){
+                            {a,b,c,d} = convertVector2Vel(0,0,3*(vx+1));
+                            iVelocities.get(a,b,c,d);
+                            break;
                         }
 
+                       obstacleState = iMovingPermit.obtain();
 
-                        iVelocities.get(a,b,c,d);
+                        if(obstacleState==0){
+                            {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
+                            iVelocities.get(a,b,c,d);
+                        }else{
+                            iVelocities.get(0,0,0,0);
+                        }
+
 
                         break;
                     }
@@ -614,15 +608,9 @@ int getVelocity(interface Wheel server wheel){
                p_core_leds_3[1] <: 0; //green
                p_core_leds_3[2] <: 1;
 
-                //laser_data_t laser_data_packet;
-                //init_data(laser_data_packet);
-
                 unsigned nOfDangerousPoints= 0;
                 unsigned dangerousPoints[105];
-                unsigned dangerousLengths[105];
-                unsigned get;
 
-                dangerousLengths[0] = 0;
                 par
                 {
 
@@ -635,117 +623,56 @@ int getVelocity(interface Wheel server wheel){
                                     nOfDangerousPoints = 0;
                                 for(unsigned i=5;i<110;i++){ //firsts and last samples are zeros
                                     if(length[i]!=0 & length[i]<600){
-                                        dangerousPoints[nOfDangerousPoints] = i-5; //offset, first samples are zeros
-                                        dangerousLengths[nOfDangerousPoints++] = length[i];
+                                        dangerousPoints[nOfDangerousPoints++] = i-5; //offset, first samples are zeros
+                                    //    dangerousLengths[nOfDangerousPoints++] = length[i];
                                     }
                                 }
-                //                if(length[60]!=0 & length[60]<1000){
-                //                    startFLAG = 1;
-                //                }
+                                iObstacleReport.state(nOfDangerousPoints);
 
                                 break;
 
-                                case cGetDangerousPoints :> get:
 
-                                    iDangerousPoints.get(nOfDangerousPoints,dangerousPoints,dangerousLengths);
-                                break;
                             }
-
-/*                    select
-                    {
-                        case iLaserData.get(unsigned length[]):
-                                 if(length[60]!=0 & length[60]<1000){
-                                     startFLAG = 1;
-                                 }
-                        break;
-
-                    }*/
-            //                if(startFLAG){
-            //                    break;
-            //                }
                         }
 
                // p_core_leds_node_3[0] <: 1;
                // p_core_leds_node_3[1] <: 0;
                // p_core_leds_node_3[2] <: 1;
 
-            //    c_start <: 1;
                     }
                     {
-                                  int VX= 0;
-                                  int VY= 100;
+
 
                                   timer t0;
 
-                                  int pointsX[105], pointsY[105];
-                                  unsigned crashFLAG;
-                                  unsigned angle;
-                                  unsigned i;
-
-                                // wait_ms(1500,10,t0);
+                                  unsigned obstacleState=0;//, get;
 
                                  while(1)
                                  {
-                                       //wait_ms(400,10,t0);
-                                       crashFLAG = 0;
+
                                        select{
-                                           case iVector.get(int vx, int vy):
-                                                   VX = vx;
-                                                   VY = vy;
 
-                                                break;
+                                           case iObstacleReport.state(unsigned state):
+                                               obstacleState = state;
+                                               if(state>0){
+                                                 p_core_leds_3[0] <: 0; //red
+                                                 p_core_leds_3[1] <: 1;
+                                                 p_core_leds_3[2] <: 1;
+
+                                             }else{
+                                                p_core_leds_3[0] <: 1;
+                                                p_core_leds_3[1] <: 0; //green
+                                                p_core_leds_3[2] <: 1;
+
+                                             }
+                                               break;
+
+                                           case iMovingPermit.obtain() -> unsigned return_val:
+
+                                           return_val = obstacleState;
+
+                                               break;
                                        }
-                                      // printintln(VX);
-                                      // printintln(VY);
-
-                                       if((VX | VY) & (VY>=0) ){
-
-                                           cGetDangerousPoints <: 1;
-                                       select{
-                                              case iDangerousPoints.get(unsigned n,unsigned index[105],unsigned length[105]):
-                                                   if(n>0){
-
-                                                      for(unsigned i=0;i<n;i++){
-                                                        angle  = index[i];
-                                                        pointsX[i] = ((int) length[i] * COS[angle])-VX;
-                                                        if(pointsX[i]<0)
-                                                            pointsX[i] *= -1;
-
-                                                        pointsY[i] = ((int) length[i] * SIN[angle])-VY;
-                                                        if(pointsY[i]<0)
-                                                            pointsY[i] *= -1;
-
-                                                        if((pointsX[i] + pointsY[i])<500){
-                                                           // printstrln("CRASH\n");
-                                                            crashFLAG = 1;
-                                                            break;
-                                                        }
-
-                                                       //  pointsX[i] = 0;
-                                                       //  pointsY[i] = 0;
-
-                                                      }
-                                                   }
-                                              break;
-                                       }
-                                       }
-
-
-                                      if(crashFLAG){
-                                          p_core_leds_3[0] <: 0; //red
-                                          p_core_leds_3[1] <: 1;
-                                          p_core_leds_3[2] <: 1;
-
-                                          iMovingPermit.permit(0);
-                                      }else{
-                                         p_core_leds_3[0] <: 1;
-                                         p_core_leds_3[1] <: 0; //green
-                                         p_core_leds_3[2] <: 1;
-
-                                         iMovingPermit.permit(1);
-                                      }
-
-                                                     // printintln(pointsY[0]);
 
 
 
