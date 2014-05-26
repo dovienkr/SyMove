@@ -331,7 +331,7 @@
 
   <!-- ###########SOMANET-CONNECTION################ -->
     <Link Encoding="2wire" Delays="4,4">
-      <LinkEndpoint NodeId="4" Link="XLB"/>
+      <LinkEndpoint NodeId="4" Link="XLA"/>
       <LinkEndpoint NodeId="8" Link="XLA"/> 
     </Link>
   <!-- ###########SOMANET-INTER-CONNECTION########### -->

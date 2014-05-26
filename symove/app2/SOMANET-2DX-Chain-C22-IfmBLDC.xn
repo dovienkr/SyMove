@@ -179,7 +179,7 @@
   
   <!-- ###########SOMANET-CONNECTION################ -->
     <Link Encoding="2wire" Delays="4,4">
-      <LinkEndpoint NodeId="0" Link="XLA"/>
+      <LinkEndpoint NodeId="3" Link="XLB"/>
       <LinkEndpoint NodeId="7" Link="XLB"/> 
     </Link>
   <!-- ###########SOMANET-INTER-CONNECTION########### -->

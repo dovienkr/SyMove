@@ -7,6 +7,7 @@
 *
 */
 
+//motor control headers
 #include <xs1.h>
 #include <platform.h>
 #include <print.h>
@@ -20,23 +21,29 @@
 #include <qei_server.h>
 #include <bldc_motor_config.h>
 #include <profile.h>
-#include <position_ctrl_server.h>
+//#include <position_ctrl_server.h>
 #include <velocity_ctrl_server.h>
 #include <drive_config.h>
 #include <profile_control.h>
 #include <internal_config.h>
 
+//joystick headers
 #include <adc_server_ad7949.h>
 #include <adc_client_ad7949.h>
 
 #include <symove_conf.h>
 
+//Range finder headers
 #include <laser.h>
 #include "hokuyo_pbs_driver.h"
 #include "uart_rx.h"
 #include "uart_tx.h"
 
 #include <trigonometry.h>
+
+//fw update headers
+#include <flash_somanet.h>
+#include <ethercat.h>
 
 on stdcore[3]: clock clk_adc = XS1_CLKBLK_1;
 on stdcore[3]: clock clk_pwm = XS1_CLKBLK_REF;
@@ -48,9 +55,9 @@ on stdcore[15]: clock clk_adc_3 = XS1_CLKBLK_1;
 on stdcore[15]: clock clk_pwm_3 = XS1_CLKBLK_REF;
 
 
-on stdcore[13]: out port p_core_leds_node_3[3] = { XS1_PORT_1M,   /* Red */
-    XS1_PORT_1L,   /* Green */
-XS1_PORT_1K }; /* Blue */
+/*on stdcore[13]: out port p_core_leds_node_3[3] = { XS1_PORT_1M,   // Red
+    XS1_PORT_1L,   // Green
+XS1_PORT_1K }; // Blue */
 
 buffered in port:1 p_rx = on stdcore[12] : XS1_PORT_1F;
 out port p_tx = on stdcore[12] : XS1_PORT_1G;
@@ -153,28 +160,28 @@ int getVelocity(interface Wheel server wheel){
 
         chan c_adc;
 
-        chan c_qei_p1_0, c_qei_p2_0, c_qei_p3_0, c_qei_p4_0, c_qei_p5_0;                 // qei channels
+        chan c_qei_p1_0, c_qei_p2_0;                 // qei channels
         chan c_hall_p1_0, c_hall_p2_0, c_hall_p3_0, c_hall_p4_0, c_hall_p5_0;                // hall channels
         chan c_commutation_p1_0, c_commutation_p2_0, c_commutation_p3_0, c_signal_0;    // commutation channels
         chan c_pwm_ctrl_0, c_adctrig_0;                                               // pwm channels
         chan c_velocity_ctrl_0;       // position control channel
         chan c_watchdog_0; // watchdog channel
 
-        chan c_qei_p1_1, c_qei_p2_1, c_qei_p3_1, c_qei_p4_1, c_qei_p5_1;                 // qei channels
+        chan c_qei_p1_1, c_qei_p2_1;                 // qei channels
         chan c_hall_p1_1, c_hall_p2_1, c_hall_p3_1, c_hall_p4_1, c_hall_p5_1;                // hall channels
         chan c_commutation_p1_1, c_commutation_p2_1, c_commutation_p3_1, c_signal_1;    // commutation channels
         chan c_pwm_ctrl_1, c_adctrig_1;                                               // pwm channels
         chan c_velocity_ctrl_1;       // position control channel
         chan c_watchdog_1; // watchdog channel
 
-        chan c_qei_p1_2, c_qei_p2_2, c_qei_p3_2, c_qei_p4_2, c_qei_p5_2;                 // qei channels
+        chan c_qei_p1_2, c_qei_p2_2;                 // qei channels
         chan c_hall_p1_2, c_hall_p2_2, c_hall_p3_2, c_hall_p4_2, c_hall_p5_2;                // hall channels
         chan c_commutation_p1_2, c_commutation_p2_2, c_commutation_p3_2, c_signal_2;    // commutation channels
         chan c_pwm_ctrl_2, c_adctrig_2;                                               // pwm channels
         chan c_velocity_ctrl_2;       // position control channel
         chan c_watchdog_2; // watchdog channel
 
-        chan c_qei_p1_3, c_qei_p2_3, c_qei_p3_3, c_qei_p4_3, c_qei_p5_3;                 // qei channels
+        chan c_qei_p1_3, c_qei_p2_3;                 // qei channels
         chan c_hall_p1_3, c_hall_p2_3, c_hall_p3_3, c_hall_p4_3, c_hall_p5_3;                // hall channels
         chan c_commutation_p1_3, c_commutation_p2_3, c_commutation_p3_3, c_signal_3;    // commutation channels
         chan c_pwm_ctrl_3, c_adctrig_3;                                               // pwm channels
@@ -182,19 +189,10 @@ int getVelocity(interface Wheel server wheel){
         chan c_watchdog_3; // watchdog channel
 
         //laser channels
-        chan c_laser_data;
         chan c_chanTX, c_chanRX;
 
-        chan c_start;
-        chan c_getJoystick;
-        chan c_va,c_vb,c_vc,c_vd,c_vx,c_vy;
-        chan c_getDangerousPoints;
-        chan c_movementPossible;
+            chan c_getJoystick;
 
-        //interface Initialization initRR;
-        //interface Initialization initRL;
-        //interface Initialization initFR;
-        //interface Initialization initFL;
 
         interface Wheel iWheelFL;
         interface Wheel iWheelFR;
@@ -210,6 +208,19 @@ int getVelocity(interface Wheel server wheel){
         interface Vector iVector;
         interface MovingPermit iMovingPermit;
 
+        chan coe_in;        // CAN from module_ethercat to consumer
+        chan coe_out;       // CAN from consumer to module_ethercat
+        chan eoe_in;        // Ethernet from module_ethercat to consumer
+        chan eoe_out;       // Ethernet from consumer to module_ethercat
+        chan eoe_sig;
+        chan foe_in;        // File from module_ethercat to consumer
+        chan foe_out;       // File from consumer to module_ethercat
+        chan pdo_in;
+        chan pdo_out;
+        chan sig_1;
+        chan c_flash_data;
+        chan c_nodes[3];   // only upto 17 nodes on dx can have firmware updated - with current implementation structure
+
         chan c_led;
 
         par
@@ -219,14 +230,14 @@ int getVelocity(interface Wheel server wheel){
 
                 timer t0;
 
-                wait_ms(2500,0,t0); //delay for evetything to get started
+                wait_ms(3000,0,t0); //delay for evetything to get started
 
 
-  /*              unsigned get;
-                select{
-                    case c_start :> get:
-                    break;
-                }*/
+              //    unsigned get;
+              //  select{
+              //     case c_start :> get:
+              //      break;
+              //  }
 
                 //    p_core_leds[0] <: 1;
                 //    p_core_leds[1] <: 0;
@@ -263,21 +274,39 @@ int getVelocity(interface Wheel server wheel){
                         iWheelRL.velocity(0);
                     }
 
-                    wait_ms(200, 0, t0);
+                    wait_ms(300, 0, t0);
+                }
+            }
+
+            on stdcore[0] :
+            {
+                par{
+                    {
+                        ecat_init();
+                        ecat_handler(coe_out, coe_in, eoe_out, eoe_in, eoe_sig, foe_out, foe_in, pdo_out, pdo_in);
+                    }
+                    {
+                        firmware_update_loop(p_spi_flash_0, foe_out, foe_in, c_flash_data, c_nodes, sig_1); // firmware update over ethercat
+                    }
                 }
             }
 
             on stdcore[1] :
             {
-                p_core_leds[0] <: 1;
-                p_core_leds[1] <: 1;
-                p_core_leds[2] <: 0;
+                p_core_leds_0[0] <: 1; //red
+                p_core_leds_0[1] <: 1; //green
+                p_core_leds_0[2] <: 0; //blue
                 while(1);
             }
             on stdcore[2] :
             {
 
                 //                    printstrln("core 3\n");
+
+                timer t0;
+              //
+                wait_ms(2000,2,t0); //delay for evetything to get started
+
 
                 par {
 
@@ -318,6 +347,8 @@ int getVelocity(interface Wheel server wheel){
             on stdcore[3] :
             {
 
+               timer t0;
+               wait_ms(2000,3,t0); //delay for evetything to get started
 
                 par
                 {
@@ -355,7 +386,7 @@ int getVelocity(interface Wheel server wheel){
 
             on stdcore[4] :
             {
-
+                firmware_update_dx(p_spi_flash_1, c_nodes[0], 2);
             }
             on stdcore[5] :
             {
@@ -402,6 +433,8 @@ int getVelocity(interface Wheel server wheel){
             }
             on stdcore[6] :
             {
+                timer t0;
+                wait_ms(2000,2,t0); //delay for evetything to get started
 
                 par
                 {
@@ -437,6 +470,9 @@ int getVelocity(interface Wheel server wheel){
 
             on stdcore[7] :
             {
+                timer t0;
+                wait_ms(2000,3,t0); //delay for evetything to get started
+
                 //    printstrln("core 8\n");
                 par
                 {
@@ -474,8 +510,7 @@ int getVelocity(interface Wheel server wheel){
             }
             on stdcore[8] :
             {
-
-
+                firmware_update_dx(p_spi_flash_2, c_nodes[1], 3);
             }
             on stdcore[9] :
             {
@@ -484,6 +519,8 @@ int getVelocity(interface Wheel server wheel){
             }
             on stdcore[10] :
             {
+                timer t0;
+                wait_ms(2000,2,t0); //delay for evetything to get started
 
                 //                printstrln("core 11\n");
                 par {
@@ -517,6 +554,9 @@ int getVelocity(interface Wheel server wheel){
             on stdcore[11] :
             {
                 //    printstrln("core 12\n");
+                timer t0;
+                wait_ms(2000,3,t0); //delay for evetything to get started
+
                 par
                 {
                     //PWM Loop
@@ -563,14 +603,16 @@ int getVelocity(interface Wheel server wheel){
                         run_scanner(c_chanRX, c_chanTX, iLaserData);
                     }
 
+                    firmware_update_dx(p_spi_flash_3, c_nodes[2], 4);
+
                 }
             }
             on stdcore[13] :
             {
 
-               p_core_leds_node_3[0] <: 1;
-               p_core_leds_node_3[1] <: 0;
-               p_core_leds_node_3[2] <: 1;
+               p_core_leds_3[0] <: 1;
+               p_core_leds_3[1] <: 0; //green
+               p_core_leds_3[2] <: 1;
 
                 //laser_data_t laser_data_packet;
                 //init_data(laser_data_packet);
@@ -690,15 +732,15 @@ int getVelocity(interface Wheel server wheel){
 
 
                                       if(crashFLAG){
-                                          p_core_leds_node_3[0] <: 0;
-                                          p_core_leds_node_3[1] <: 1;
-                                          p_core_leds_node_3[2] <: 1;
+                                          p_core_leds_3[0] <: 0; //red
+                                          p_core_leds_3[1] <: 1;
+                                          p_core_leds_3[2] <: 1;
 
                                           iMovingPermit.permit(0);
                                       }else{
-                                         p_core_leds_node_3[0] <: 1;
-                                         p_core_leds_node_3[1] <: 0;
-                                         p_core_leds_node_3[2] <: 1;
+                                         p_core_leds_3[0] <: 1;
+                                         p_core_leds_3[1] <: 0; //green
+                                         p_core_leds_3[2] <: 1;
 
                                          iMovingPermit.permit(1);
                                       }
@@ -719,7 +761,8 @@ int getVelocity(interface Wheel server wheel){
             on stdcore[14] :
             {
                 //                printstrln("core 15\n");
-
+                timer t0;
+                wait_ms(2000,2,t0); //delay for evetything to get started
                 par
                 {
                     {
@@ -750,6 +793,9 @@ int getVelocity(interface Wheel server wheel){
             }
             on stdcore[15] :
             {
+                timer t0;
+                wait_ms(2000,3,t0); //delay for evetything to get started
+
                 //printstrln("core 16\n");
                 par
                 {

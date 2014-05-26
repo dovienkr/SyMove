@@ -1,0 +1,10 @@
+/**
+
+\page mods
+\section module_ethercat module_ethercat
+
+The module_ethercat provides the basic components to implement EtherCAT. It is composed by several APIs, which cover the lowest layer of the EtherCAT protocol, such as packet declarations or functions to send and receive such packets. 
+
+*/
+
+
