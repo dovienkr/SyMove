@@ -26,6 +26,7 @@
 #include <drive_config.h>
 #include <profile_control.h>
 #include <internal_config.h>
+//#include "include/interfaces.h"
 
 //joystick headers
 #include <adc_server_ad7949.h>
@@ -45,6 +46,15 @@
 #include <flash_somanet.h>
 #include <ethercat.h>
 
+
+//websockets
+#include "websocketHandler.h"
+#include <stdlib.h>
+#include <string.h>
+#include "motor_logic.h"
+#include "rover_manager.h"
+#include "websocket_logic.h"
+
 on stdcore[3]: clock clk_adc = XS1_CLKBLK_1;
 on stdcore[3]: clock clk_pwm = XS1_CLKBLK_REF;
 on stdcore[7]: clock clk_adc_1 = XS1_CLKBLK_1;
@@ -53,6 +63,8 @@ on stdcore[11]: clock clk_adc_2 = XS1_CLKBLK_1;
 on stdcore[11]: clock clk_pwm_2 = XS1_CLKBLK_REF;
 on stdcore[15]: clock clk_adc_3 = XS1_CLKBLK_1;
 on stdcore[15]: clock clk_pwm_3 = XS1_CLKBLK_REF;
+
+on stdcore[16]: out port reset = XS1_PORT_1F;
 
 
 /*on stdcore[13]: out port p_core_leds_node_3[3] = { XS1_PORT_1M,   // Red
@@ -64,6 +76,10 @@ out port p_tx = on stdcore[12] : XS1_PORT_1G;
 
 /*interface Initialization {
     void init(int i);
+};*/
+
+/*interface MovingPermit{
+    void permit(unsigned p);
 };*/
 
 interface Points {
@@ -87,17 +103,80 @@ interface Velocities{
 };
 
 interface Vector{
+  void get(float vx, float vy);
+};
+
+interface RawVector{
   void get(int vx, int vy);
 };
 
-/*interface MovingPermit{
-    void permit(unsigned p);
-};*/
 
 int getVelocity(interface Wheel server wheel){
     select{
         case wheel.velocity(int vel):
         return vel;
+    }
+}
+
+
+void vectorManager (chanend xy, interface RawVector client iRawVector)
+{
+    int x = 0;
+    int y = 0;
+    int c = 0;
+    //int motor_left = 0;
+    //int motor_right = 0;
+    //int driveMode = 0;
+    timer safetyTimer;
+    unsigned time;
+    unsigned safety_time = 200 * MSEC_STD;
+
+
+    unsigned inited = 0;
+
+
+    while (1)
+    {
+        select
+        {
+            case xy :> x:
+            {
+
+                //Read second value
+                xy :> y;
+
+                // Reset timer
+                safetyTimer :> time;
+                time += safety_time;
+
+                break;
+            }
+           /* case giveMeVector :> c:
+            {    giveMeVector <: x;
+                 //giveMeVector <: y;
+
+                break;
+            }*/
+            case safetyTimer when timerafter(time) :> void:
+            {
+                //Safety function -> Turns of motors after 250ms
+               // motor_left = 0;
+               // motor_right = 0;
+                x = 0;
+                y = 0;
+
+                // Reset timer
+                safetyTimer :> time;
+                time += safety_time;
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        iRawVector.get(x,y);
+
     }
 }
 
@@ -211,6 +290,7 @@ int getVelocity(interface Wheel server wheel){
         interface LaserData iLaserData;
 
         interface Vector iVector;
+        interface RawVector iRawVector;
         interface MovingPermit iMovingPermit;
         interface ObstacleReport iObstacleReport;
 
@@ -225,7 +305,17 @@ int getVelocity(interface Wheel server wheel){
         chan pdo_out;
         chan sig_1;
         chan c_flash_data;
-        chan c_nodes[3];   // only upto 17 nodes on dx can have firmware updated - with current implementation structure
+        chan c_nodes[4];   // only upto 17 nodes on dx can have firmware updated - with current implementation structure
+
+        //websockets channels
+        chan dataRcv;
+        chan dataSend; // Only needed when sending data via websockets to the server
+        chan giveMeVector, init;
+        chan ddrive;
+        chan xy;
+        chan c_adc1;
+
+
 
         par
         {
@@ -260,7 +350,7 @@ int getVelocity(interface Wheel server wheel){
                             break;
 
                         }
-                        wait_ms(300, 0, t0);
+                        wait_ms(50, 0, t0);
                     }
 
             }
@@ -378,29 +468,29 @@ int getVelocity(interface Wheel server wheel){
             on stdcore[5] :
             {
 
-                int joystick_x, joystick_y;
-                float vx, vy;
+               // int joystick_x, joystick_y;
+               // float vx, vy;
                 int a,b,c,d;
-                unsigned get;
+               // unsigned get;
                 timer t0;
                 unsigned obstacleState = 0;
                 wait_ms(500, 5, t0); //delay for ADC server to get initialised
 
-                for(int i= 0; i<20;i++){
+             //   for(int i= 0; i<20;i++){
 
-                    {joystick_x , joystick_y} = get_adc_external_potentiometer_ad7949(c_adc);
+             //       {joystick_x , joystick_y} = get_adc_external_potentiometer_ad7949(c_adc);
 
-                }
+             //   }
                 //  printstrln("entro al loop");
                 while(1){
                     select{
-                        case c_getJoystick :> get:
-                        {joystick_y,joystick_x} = get_adc_external_potentiometer_ad7949(c_adc); //y=port1, x=port2
+                        case iVector.get(float vx, float vy): //c_getJoystick :> get:
+                     //   {joystick_y,joystick_x} = get_adc_external_potentiometer_ad7949(c_adc); //y=port1, x=port2
 
                         //     printintln(joystick_y);
                         //     printintln(joystick_x);
 
-                        {vx, vy} = convertJoystick2Vector(joystick_x, joystick_y);
+                    //    {vx, vy} = convertJoystick2Vector(joystick_x, joystick_y);
 
                       //  iVector.get(12*vx,12*vy); // send the vector to obtain moving permit
                         //      c_vx <: vx;
@@ -408,19 +498,16 @@ int getVelocity(interface Wheel server wheel){
                         if(vy<0){
                             {a,b,c,d} = convertVector2Vel(0,0,3*(vx+1));
                             iVelocities.get(a,b,c,d);
-                            break;
-                        }
-
-                       obstacleState = iMovingPermit.obtain();
-
-                        if(obstacleState==0){
-                            {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
-                            iVelocities.get(a,b,c,d);
                         }else{
-                            iVelocities.get(0,0,0,0);
+
+                            obstacleState = iMovingPermit.obtain();
+                            if(obstacleState==0){
+                                {a,b,c,d} = convertVector2Vel(vy,vx,0); //front
+                                iVelocities.get(a,b,c,d);
+                            }else{
+                                iVelocities.get(0,0,0,0);
+                            }
                         }
-
-
                         break;
                     }
                 }
@@ -471,7 +558,7 @@ int getVelocity(interface Wheel server wheel){
                 par
                 {
                     //ADC Server for Joystick
-                    adc_ad7949(c_adc, clk_adc_1, p_ifm_adc_sclk_conv_mosib_mosia_node_1, p_ifm_adc_misoa_node_1, p_ifm_adc_misob_node_1);
+                   // adc_ad7949(c_adc, clk_adc_1, p_ifm_adc_sclk_conv_mosib_mosia_node_1, p_ifm_adc_misoa_node_1, p_ifm_adc_misob_node_1);
 
                     //PWM Loop
                     do_pwm_inv_triggered(c_pwm_ctrl_1, c_adctrig_1, p_ifm_dummy_port_node_1,
@@ -673,10 +760,6 @@ int getVelocity(interface Wheel server wheel){
 
                                                break;
                                        }
-
-
-
-
                                  }
 
                               }
@@ -756,6 +839,70 @@ int getVelocity(interface Wheel server wheel){
                     }
                 }
             }
+
+            on stdcore[16] :
+            {
+
+               // firmware_update_dx(p_spi_flash_4, c_nodes[3], 5);
+                par{
+                    websocketClient(dataRcv, dataSend);
+                    receive(dataRcv, xy);
+                    vectorManager(xy, iRawVector);
+                    roverManager(dataSend, c_adc1);
+                }
+            }
+            on stdcore[17] :
+            {
+
+                float x,y;
+                //int px,py;
+                unsigned c;
+               // timer t0;
+
+                while (1) {
+                select{
+                    case iRawVector.get(int px, int py):
+                    {
+                        if(px>600){
+                            px = 600;
+                        }else if(px<-600){
+                            px = -600;
+                        }
+
+                        x = px / 100.0;
+
+                        if(py>600){
+                            py = 600;
+                        }else if(py<-600){
+                            py = -600;
+                        }
+
+                        y = py / 100.0;
+
+                   //     c++;
+                   //     if (px !=0 && c > 100 ){
+
+                    // printint((int)x);
+                    // printstr(" ");
+                    // printintln((int)y);
+                   //  c=0;
+                        }
+                     break;
+
+                    case  c_getJoystick :> c:
+                    {
+                        iVector.get(x,y);
+                        break;
+                    }
+                 }
+
+                }
+
+
+
+            }
+            on stdcore[18] :{}
+            on stdcore[19] :{}
 
         }
         return 0;

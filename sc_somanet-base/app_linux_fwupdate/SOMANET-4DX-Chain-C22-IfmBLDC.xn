@@ -4,10 +4,10 @@
 	 xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
 
 	<Type>Board</Type>
-	<Name>SOMANET-5DX-Chain-C22-IfmBLDC</Name>
+	<Name>SOMANET-4DX-Chain-C22-IfmBLDC</Name>
 
   <Declarations>
-    <Declaration>core stdcore[20]</Declaration>
+    <Declaration>core stdcore[16]</Declaration>
   </Declarations>
 
   <Packages>
@@ -221,57 +221,7 @@
       </Nodes>
     </Package>
     <!--########################## FOURTH SOMANET C22 END ####################################### -->
-    <!--########################## FIFTH SOMANET C22 START ####################################### -->
-     <!-- C22 Primary Package -->
-    <Package Id="8" Type="XS1-L2A-QF124">
-      <Nodes>
-		<Node Id="16" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
-	  		<Boot>
-	      		<Source Location="SPI:bootFlash_4"/> 
-		  		<Bootee NodeId="17" Core="16"/>
-		  		<Bootee NodeId="18" Core="16"/>
-		  		<Bootee NodeId="19" Core="16"/> 
-	    		</Boot>
-	  		<Core Number="0" Reference="stdcore[16]">
-	    			<Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO_4"/>
-	    			<Port Location="XS1_PORT_1B" Name="PORT_SPI_SS_4"/>
-	    			<Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK_4"/>
-	    			<Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI_4"/>
-	  		</Core>
-		</Node>
-		<Node Id="17" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
-	  		<Boot>
-	    			<Source Location="XMOSLINK"/>
-	  		</Boot>
-	  		<Core Number="0" Reference="stdcore[17]">
-	    			<Port Location="XS1_PORT_1K" Name="LED_BLUE_4"/>
-	    			<Port Location="XS1_PORT_1L" Name="LED_GREEN_4"/>
-	    			<Port Location="XS1_PORT_1M" Name="LED_RED_4"/>
-	  		</Core>
-		</Node>
-      </Nodes>
-    </Package>
-    
-   <!-- C22 Secondary Package -->
-    <Package Id="9" Type="XS1-L2A-QF124">
-      <Nodes>
-		<Node Id="18" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
-	  		<Boot>
-	    		<Source Location="XMOSLINK"/>
-	  		</Boot>
-	  		<Core Number="0" Reference="stdcore[18]">
-	  		</Core>
-		</Node>
-		<Node Id="19" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz" ReferenceFrequency="250Mhz">
-	  		<Boot>
-	    		<Source Location="XMOSLINK"/>
-	  		</Boot>
-	  		<Core Number="0" Reference="stdcore[19]">
-	  		</Core>
-		</Node>
-      </Nodes>
-    </Package>
-    <!--########################## FOURTH SOMANET C22 END ####################################### -->
+  
   <!-- Packages END -->
   </Packages>
  
@@ -381,7 +331,7 @@
 
   <!-- ###########SOMANET-CONNECTION################ -->
     <Link Encoding="2wire" Delays="4,4">
-      <LinkEndpoint NodeId="4" Link="XLB"/>
+      <LinkEndpoint NodeId="4" Link="XLA"/>
       <LinkEndpoint NodeId="8" Link="XLA"/> 
     </Link>
   <!-- ###########SOMANET-INTER-CONNECTION########### -->
@@ -486,64 +436,8 @@
       <LinkEndpoint NodeId="14" Link="XLF"/>
       <LinkEndpoint NodeId="15" Link="XLG"/>
     </Link>
-    
-  <!-- ########################## FOURTH SOMANET C22 END########################## -->
-  
-    <!-- ###########SOMANET-CONNECTION################ -->
-    <Link Encoding="2wire" Delays="4,4">
-      <LinkEndpoint NodeId="4" Link="XLA"/>
-      <LinkEndpoint NodeId="19" Link="XLB"/> 
-    </Link>
-  <!-- ###########SOMANET-INTER-CONNECTION########### -->
+  <!-- ##########################FOURTH SOMANET C22 END########################## -->
 
-   <!-- ########################## FIFTH SOMANET C22 START########################## -->
-    <!-- L2-1 internal -->
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="16" Link="XLG"/>
-      <LinkEndpoint NodeId="17" Link="XLF"/>
-    </Link>
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="16" Link="XLH"/>
-      <LinkEndpoint NodeId="17" Link="XLE"/>
-    </Link>
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="16" Link="XLE"/>
-      <LinkEndpoint NodeId="17" Link="XLH"/>
-    </Link>
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="16" Link="XLF"/>
-      <LinkEndpoint NodeId="17" Link="XLG"/>
-    </Link>
-
-    <!-- L2-1 to L2-2 -->
-    <Link Encoding="5wire" Delays="4,4">
-      <LinkEndpoint NodeId="17" Link="XLA"/>
-      <LinkEndpoint NodeId="18" Link="XLA"/>
-    </Link>
-    <Link Encoding="5wire" Delays="4,4">
-      <LinkEndpoint NodeId="17" Link="XLB"/>
-      <LinkEndpoint NodeId="18" Link="XLB"/>
-    </Link>
-     
-    <!-- L2-2 internal -->
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="18" Link="XLG"/>
-      <LinkEndpoint NodeId="19" Link="XLF"/>
-    </Link>
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="18" Link="XLH"/>
-      <LinkEndpoint NodeId="19" Link="XLE"/>
-    </Link>
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="18" Link="XLE"/>
-      <LinkEndpoint NodeId="19" Link="XLH"/>
-    </Link>
-    <Link Encoding="5wire" Delays="0,1">
-      <LinkEndpoint NodeId="18" Link="XLF"/>
-      <LinkEndpoint NodeId="19" Link="XLG"/>
-    </Link>
-    
-  <!-- ########################## FIFTH SOMANET C22 END########################## -->
 
 
 </Links>
@@ -569,21 +463,12 @@
       <Attribute Name="PORT_SPI_CLK"  Value="PORT_SPI_CLK_2"/>
       <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_2"/>
     </Device>
-    
     <Device NodeId="12" Core="0" Class="SPIFlash" Name="bootFlash_3" Type="AT25DF041A">
       <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO_3"/>
       <Attribute Name="PORT_SPI_SS"   Value="PORT_SPI_SS_3"/>
       <Attribute Name="PORT_SPI_CLK"  Value="PORT_SPI_CLK_3"/>
       <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_3"/>
     </Device>
-    
-    <Device NodeId="16" Core="0" Class="SPIFlash" Name="bootFlash_4" Type="AT25DF041A">
-      <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO_4"/>
-      <Attribute Name="PORT_SPI_SS"   Value="PORT_SPI_SS_4"/>
-      <Attribute Name="PORT_SPI_CLK"  Value="PORT_SPI_CLK_4"/>
-      <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI_4"/>
-    </Device>
-    
   </ExternalDevices>
 
   <JTAGChain>
@@ -603,9 +488,5 @@
     <JTAGDevice NodeId="13" Position="13"/>
     <JTAGDevice NodeId="14" Position="14"/>
     <JTAGDevice NodeId="15" Position="15"/>
-    <JTAGDevice NodeId="16" Position="16"/>
-    <JTAGDevice NodeId="17" Position="17"/>
-    <JTAGDevice NodeId="18" Position="18"/>
-    <JTAGDevice NodeId="19" Position="19"/>
   </JTAGChain>
 </Network>

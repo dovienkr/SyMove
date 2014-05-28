@@ -1,7 +1,7 @@
 # The TARGET variable determines what target system the application is
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling
-TARGET = SOMANET-4DX-Chain-C22-IfmBLDC
+TARGET = SOMANET-5DX-Chain-C22-IfmBLDC
 
 # The APP_NAME variable determines the name of the final .xe file. It should
 # not include the .xe postfix. If left blank the name will default to
@@ -10,7 +10,7 @@ APP_NAME =
 
 # The USED_MODULES variable lists other module used by the application.
 
-USED_MODULES = module_hokuyo_pbs module_uart_rx module_uart_tx module_pwm_symmetrical sc_sncn_motorctrl_sin/module_adc sc_sncn_motorctrl_sin/module_blocks sc_sncn_motorctrl_sin/module_common sc_sncn_motorctrl_sin/module_commutation sc_sncn_motorctrl_sin/module_ctrl_loops sc_sncn_motorctrl_sin/module_hall sc_sncn_motorctrl_sin/module_profile sc_sncn_motorctrl_sin/module_qei sc_sncn_motorctrl_sin/module_sm sc_somanet-base/module_nodeconfig module_fwupdate sc_sncn_ethercat/module_ethercat
+USED_MODULES = module_hokuyo_pbs module_uart_rx module_uart_tx module_pwm_symmetrical sc_sncn_motorctrl_sin/module_adc sc_sncn_motorctrl_sin/module_blocks sc_sncn_motorctrl_sin/module_common sc_sncn_motorctrl_sin/module_commutation sc_sncn_motorctrl_sin/module_ctrl_loops sc_sncn_motorctrl_sin/module_hall sc_sncn_motorctrl_sin/module_profile sc_sncn_motorctrl_sin/module_qei sc_sncn_motorctrl_sin/module_sm sc_somanet-base/module_nodeconfig module_fwupdate sc_sncn_ethercat/module_ethercat module_ethernet_board_support module_somanet_websocket_client module_xtcp
 #
 
 # The flags passed to xcc when building the application
