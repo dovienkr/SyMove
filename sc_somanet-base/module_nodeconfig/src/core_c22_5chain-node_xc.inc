@@ -33,11 +33,11 @@ on stdcore[12]: fl_SPIPorts p_spi_flash_3 = { PORT_SPI_MISO_3,
  								PORT_SPI_MOSI_3,
  								XS1_CLKBLK_2 };
  								
-on stdcore[16]: fl_SPIPorts p_spi_flash_4 = { PORT_SPI_MISO_4,
+/*on stdcore[16]: fl_SPIPorts p_spi_flash_4 = { PORT_SPI_MISO_4,
  								PORT_SPI_SS_4,
  								PORT_SPI_CLK_4,
  								PORT_SPI_MOSI_4,
- 								XS1_CLKBLK_2 };
+ 								XS1_CLKBLK_2 };*/
  								
 /* RGB LED */
 on stdcore[1]: out port p_core_leds_0[3] = { XS1_PORT_1M,   // Red 
