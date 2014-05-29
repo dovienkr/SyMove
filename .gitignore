@@ -34,3 +34,27 @@ bin/
 .directory
 
 .metadata
+
+app_hokuyo_pbs/.cproject
+
+module_hokuyo_pbs/.cproject
+
+module_uart_rx/.cproject
+
+module_uart_tx/.cproject
+
+sc_pwm/.cproject
+
+*.prefs
+
+sc_pwm/.settings/org.eclipse.cdt.core.prefs
+
+sc_sncn_ethercat/.cproject
+
+sc_sncn_motorctrl_sin/.cproject
+
+sc_somanet-base/.cproject
+
+symove/.cproject
+
+symove/.settings/org.eclipse.cdt.core.prefs
