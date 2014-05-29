@@ -76,7 +76,7 @@
 #define WEBSOCKET_SERVER_IP_4thOctet 250
 
 /* PORT of the websocket server */
-#define WEBSOCKET_SERVER_PORT 80
+#define WEBSOCKET_SERVER_PORT 1234
 
 
 
