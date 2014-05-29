@@ -15,7 +15,7 @@ extern fl_SPIPorts p_spi_flash_0;
 extern fl_SPIPorts p_spi_flash_1;
 extern fl_SPIPorts p_spi_flash_2;
 extern fl_SPIPorts p_spi_flash_3;
-extern fl_SPIPorts p_spi_flash_4;
+//extern fl_SPIPorts p_spi_flash_4;
 
 /* RGB LED */
 extern out port p_core_leds_0[3]; /* = { Red, Green, Blue } */
