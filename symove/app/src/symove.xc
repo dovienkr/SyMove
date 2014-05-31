@@ -201,13 +201,16 @@ void vectorManager (chanend xy, interface RawVector client iRawVector)
 
         float vx, vy;
 
-        if (xSignal < (X_ZERO - ZERO_ERROR)){
+        if (xSignal < (X_ZERO - ZERO_ERROR))
+        {
             vx = 1.0 * (X_ZERO - xSignal) / (X_ZERO - X_MIN);
             vx = vx * MAX_LINEAL_VELOCITY;
-            }else if(xSignal > (X_ZERO + ZERO_ERROR)){
+            } else if(xSignal > (X_ZERO + ZERO_ERROR)){
             vx = - 1.0 * (xSignal - X_ZERO) / (X_MAX - X_ZERO);
             vx = vx * MAX_LINEAL_VELOCITY;
-            }else{
+        }
+        else
+        {
             vx = 0;
         }
         if (ySignal < (Y_ZERO - ZERO_ERROR)){
@@ -681,7 +684,10 @@ void vectorManager (chanend xy, interface RawVector client iRawVector)
                     {
                         timer t0;
                         wait_ms(1000,12, t0); //delay for uarts to get initialised
-                        run_scanner(c_chanRX, c_chanTX, iLaserData);
+                        while (1)
+                        {
+                            run_scanner(c_chanRX, c_chanTX, iLaserData);
+                        }
                     }
 
                     firmware_update_dx(p_spi_flash_3, c_nodes[2], 4);
@@ -700,7 +706,6 @@ void vectorManager (chanend xy, interface RawVector client iRawVector)
 
                 par
                 {
-
                     {
                         unsigned startFLAG = 0;
                         while(1){
@@ -711,7 +716,7 @@ void vectorManager (chanend xy, interface RawVector client iRawVector)
                                 for(unsigned i=5;i<110;i++){ //firsts and last samples are zeros
                                     if(length[i]!=0 & length[i]<600){
                                         dangerousPoints[nOfDangerousPoints++] = i-5; //offset, first samples are zeros
-                                    //    dangerousLengths[nOfDangerousPoints++] = length[i];
+                                    //  dangerousLengths[nOfDangerousPoints++] = length[i];
                                     }
                                 }
                                 iObstacleReport.state(nOfDangerousPoints);
@@ -840,6 +845,7 @@ void vectorManager (chanend xy, interface RawVector client iRawVector)
                 }
             }
 
+            // Node 5
             on stdcore[16] :
             {
 

@@ -560,8 +560,11 @@ void run_scanner(chanend c_uartRX, chanend c_uartTX, interface LaserData client 
 
 
   //! The main loop
+
+	int breakCnt = 0;
 	while(1)
 	{
+	    breakCnt ++;
 
 			switch(state)
 			{
@@ -797,6 +800,9 @@ void run_scanner(chanend c_uartRX, chanend c_uartTX, interface LaserData client 
 				break;
 			}
 
+
+			if (breakCnt > 20)
+			    break;
 	}
 }
 
